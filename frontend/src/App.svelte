@@ -2,12 +2,13 @@
   import Header from "./lib/Header.svelte";
 </script>
 
-<Header></Header>
-<main></main>
+<main>
+  <Header></Header>
+</main>
 
 <style>
   :global(body) {
     margin: 0;
-    font-family: "Roboto Slab";
+    font-family: "Inter";
   }
 </style>
