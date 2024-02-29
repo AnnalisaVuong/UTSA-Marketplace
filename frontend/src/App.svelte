@@ -7,7 +7,7 @@
 
 <style>
   :global(body) {
-    background-color: #0e1111;
     margin: 0;
+    font-family: "Roboto Slab";
   }
 </style>
