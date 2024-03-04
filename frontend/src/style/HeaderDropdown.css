@@ -1,0 +1,32 @@
+.dropdown > a {
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 10%;
+  color: #222222;
+}
+
+.dropdown a:hover {
+  color: #f15a22;
+}
+
+.dropdown {
+  border: none;
+  border-radius: 6px;
+  display: flex;
+  width: 90vw;
+  margin: 0 auto;
+  right: 0;
+  left: 0;
+  background-color: #ffffff;
+  position: absolute;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+  height: 0vh;
+  transition: height 300ms;
+  overflow: hidden;
+}
+
+.visible {
+  height: 20vh;
+}
