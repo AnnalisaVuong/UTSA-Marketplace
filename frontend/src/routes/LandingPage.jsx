@@ -4,7 +4,11 @@ import "@style/LandingPage.css";
 /**
  * Route: Landing Page
  *
- * @description The first page a user will see when they arrive at the page.
+ * URI: /
+ *
+ * @description The first page a user will see when they arrive at the site.
+ *
+ * @returns {React.ReactElement} Component to be rendered at the landing page route.
  */
 export default function LandingPage() {
   return (
