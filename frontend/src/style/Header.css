@@ -1,13 +1,43 @@
+a:hover,
+.login:hover {
+  color: #f15a22;
+  border-color: #f15a22 !important;
+}
+
 a {
   text-decoration: none;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.header-white {
+  background-color: #ffffff;
+  transition: background-color 800ms;
+  position: sticky;
+  top: 0px;
+}
+
+.header-white > .login {
+  border-color: #222222;
+}
+
+.header-white button {
+  color: #222222;
+}
+
+.header-white * {
+  color: #222222;
+}
+
+.header-blue {
+  background-color: #0c2340;
+  transition: background-color 400ms;
   color: #ffffff;
 }
 
 .container {
   display: flex;
   justify-content: space-between;
-  background-color: #0c2340;
-  color: #ffffff;
   padding: 1em 8vw;
 }
 
@@ -20,11 +50,6 @@ a {
   border: 2px solid #ffffff;
   border-radius: 5px;
   padding: 10px 25px;
-}
-
-a:hover {
-  color: #f15a22;
-  border-color: #f15a22;
 }
 
 .header-options {

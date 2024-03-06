@@ -1,7 +1,11 @@
 import Header from "@components/Header";
 import "@style/LandingPage.css";
 
-// Create a component for the landing page.
+/**
+ * Route: Landing Page
+ *
+ * @description The first page a user will see when they arrive at the page.
+ */
 export default function LandingPage() {
   return (
     <>

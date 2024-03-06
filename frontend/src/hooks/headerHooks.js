@@ -2,10 +2,14 @@ import { useState } from "react";
 
 /**
  * Hook: useUndersize
- * @param {number} upperBound
- *  - The upper bound to use to determine if the window is undersize.
  *
- * @returns {boolean}
+ * @description Checks the size of the screen and sets a
+ *  boolean based on whether it exceeds the given value.
+ *
+ * @param {number} upperBound
+ *  The upper bound to use to determine if the window is undersize.
+ *
+ * @returns {boolean} Signaling whether the window size exceeds given parameter.
  */
 export function useUndersize(upperBound) {
   const [undersize, setUndersize] = useState(false);
@@ -18,6 +22,13 @@ export function useUndersize(upperBound) {
   return undersize;
 }
 
+/**
+ * Hook: useScroll
+ *
+ * @description Sets a boolean based on whether the page has been scrolled.
+ *
+ * @returns {boolean} Indicates whether the page has been scrolled.
+ */
 export function useScroll() {
   const [isScrolled, setIsScrolled] = useState(false);
 

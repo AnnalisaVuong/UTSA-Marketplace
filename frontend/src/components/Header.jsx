@@ -4,29 +4,47 @@ import { useScroll, useUndersize } from "@hooks/headerHooks";
 import HeaderDropdown from "@components/HeaderDropdown";
 
 /**
- * A header component for the page.
+ * Component: Header
+ *
+ * @description A header with links and a
+ *  nav bar to be displayed at the top of a page.
  *
  * @return {React.ReactElement} The header component.
  * */
 export default function Header() {
   const [dropdownToggled, setDropdownToggled] = useState(false);
   const [theme, setTheme] = useState("blue");
+  const [headerHeight, setHeaderHeight] = useState(0);
+  const headerElement = useRef(null);
   const undersize = useUndersize(1000);
   const isScrolled = useScroll();
 
-  const containerRef = useRef(null);
-
+  // Change the layout of the header when the page width is too small.
   useEffect(() => {
     if (!undersize) setDropdownToggled(false);
   }, [undersize]);
 
+  // Change the color of the header when the user scrolls down.
+  useEffect(() => setTheme(isScrolled ? "white" : "blue"), [isScrolled]);
+
+  // Set the height of the header when the component mounts.
   useEffect(() => {
-    setTheme(isScrolled ? "white" : "blue");
-  }, [isScrolled]);
+    /** @type {HTMLElement | null} - Type could be defined at this state */
+    const elementOption = headerElement.current;
+
+    // Check if the ref is null
+    if (!elementOption) {
+      return;
+    }
+
+    /** @type {HTMLElement} */
+    const element = elementOption;
+    setHeaderHeight(element.clientHeight);
+  }, []);
 
   return (
     <>
-      <div className={`container header-${theme}`} ref={containerRef}>
+      <div className={`container header-${theme}`} ref={headerElement}>
         <h1>Rowdy Marketplace</h1>
         {!undersize ? (
           <>
@@ -35,7 +53,9 @@ export default function Header() {
               <a href="/features">Features</a>
               <a href="/overview">Overview</a>
             </div>
-            <a href="/login">Log In</a>
+            <a className="login" id="login" href="/login">
+              Log In
+            </a>
           </>
         ) : (
           <button
@@ -45,12 +65,12 @@ export default function Header() {
             ...
           </button>
         )}
+        <HeaderDropdown display={dropdownToggled} offset={headerHeight}>
+          <a href="/home">Home</a>
+          <a href="/features">Features</a>
+          <a href="/overview">Overview</a>
+        </HeaderDropdown>
       </div>
-      <HeaderDropdown display={dropdownToggled}>
-        <a href="/home">Home</a>
-        <a href="/features">Features</a>
-        <a href="/overview">Overview</a>
-      </HeaderDropdown>
     </>
   );
 }
