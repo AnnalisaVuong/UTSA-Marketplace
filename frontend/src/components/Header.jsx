@@ -1,29 +1,32 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "@style/Header.css";
-import "@style/HeaderDropdown.css";
-import { useUndersize } from "@hooks";
+import { useScroll, useUndersize } from "@hooks/headerHooks";
 import HeaderDropdown from "@components/HeaderDropdown";
 
-/** A header component for the page.
- * @returns {ReactElement}
+/**
+ * A header component for the page.
+ *
+ * @return {React.ReactElement} The header component.
  * */
 export default function Header() {
   const [dropdownToggled, setDropdownToggled] = useState(false);
+  const [theme, setTheme] = useState("blue");
   const undersize = useUndersize(1000);
+  const isScrolled = useScroll();
 
-  function toggleDropdown() {
-    setDropdownToggled(!dropdownToggled);
-  }
+  const containerRef = useRef(null);
 
   useEffect(() => {
-    if (!undersize) {
-      setDropdownToggled(false);
-    }
+    if (!undersize) setDropdownToggled(false);
   }, [undersize]);
+
+  useEffect(() => {
+    setTheme(isScrolled ? "white" : "blue");
+  }, [isScrolled]);
 
   return (
     <>
-      <div className="container">
+      <div className={`container header-${theme}`} ref={containerRef}>
         <h1>Rowdy Marketplace</h1>
         {!undersize ? (
           <>
@@ -35,7 +38,10 @@ export default function Header() {
             <a href="/login">Log In</a>
           </>
         ) : (
-          <button className="btn-dropdown" onClick={toggleDropdown}>
+          <button
+            className="btn-dropdown"
+            onClick={() => setDropdownToggled(!dropdownToggled)}
+          >
             ...
           </button>
         )}

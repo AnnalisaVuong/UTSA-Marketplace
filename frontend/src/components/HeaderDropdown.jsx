@@ -1,13 +1,13 @@
 import "@style/HeaderDropdown.css";
 
 /**
- * Component for a header dropdown block containing options for the user.
+ * @description Component for a header dropdown block containing options for the user.
  *
  * @param {Object} props
  * @param {boolean} props.display - whether the component should be display.
- * @param {HTMLElement} props.children - The children of this element.
+ * @param {React.ReactNode} props.children - The children of this element.
  *
- * @returns {ReactElement}
+ * @returns {React.ReactElement}
  */
 export default function HeaderDropdown({ display, children }) {
   return (

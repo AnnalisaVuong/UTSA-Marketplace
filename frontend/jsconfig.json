@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
+    "jsx": "react-jsx",
     "baseUrl": "./src",
+    "moduleResolution": "bundler",
     "paths": {
       "@assets/*": ["assets/*"],
       "@components/*": ["components/*"],
@@ -8,7 +10,11 @@
       "@lib/*": ["lib/*"],
       "@routes/*": ["routes/*"],
       "@style/*": ["style/*"]
-    }
+    },
+    "checkJs": true,
+    "strictNullChecks": true,
+    "target": "ESNext",
+    "module": "ESNext"
   },
   "exclude": ["node_modules", "**/node_modules/*"]
 }

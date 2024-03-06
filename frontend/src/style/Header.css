@@ -47,7 +47,7 @@ a:hover {
   flex: 1;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 1000px) {
   .container > h1 {
     font-size: 1.4rem;
   }
