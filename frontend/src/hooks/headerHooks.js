@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 /**
  * Hook: useUndersize
@@ -32,9 +32,16 @@ export function useUndersize(upperBound) {
 export function useScroll() {
   const [isScrolled, setIsScrolled] = useState(false);
 
-  window.addEventListener("scroll", () => {
-    setIsScrolled(window.scrollY != 0);
-  });
+  useEffect(() => {
+    window.addEventListener("scroll", () => {
+      setIsScrolled(window.scrollY != 0);
+    });
+
+    return () =>
+      window.removeEventListener("scroll", () => {
+        setIsScrolled(window.scrollY != 0);
+      });
+  }, []);
 
   return isScrolled;
 }

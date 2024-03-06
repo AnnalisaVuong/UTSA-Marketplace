@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
-import "@style/Header.css";
-import { useScroll, useUndersize } from "@hooks/headerHooks";
+import { useUndersize, useScroll } from "@hooks/headerHooks";
 import HeaderDropdown from "@components/HeaderDropdown";
+import "@style/Header.css";
 
 /**
  * Component: Header
@@ -24,7 +24,7 @@ export default function Header() {
     if (!undersize) setDropdownToggled(false);
   }, [undersize]);
 
-  // Change the color of the header when the user scrolls down.
+  // Change the theme of the header when the scroll status changes.
   useEffect(() => setTheme(isScrolled ? "white" : "blue"), [isScrolled]);
 
   // Set the height of the header when the component mounts.

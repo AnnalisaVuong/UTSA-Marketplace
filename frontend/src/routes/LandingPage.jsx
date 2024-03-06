@@ -1,5 +1,6 @@
 import Header from "@components/Header";
 import "@style/LandingPage.css";
+import shoppingSvgPath from "@assets/shopping.svg";
 
 /**
  * Route: Landing Page
@@ -16,13 +17,19 @@ export default function LandingPage() {
       <Header />
       <div className="landing-hero-header">
         <div className="landing-grid">
-          <div>
-            <h1>This is some text.</h1>
-            <h2>This is some more text.</h2>
+          <div className="hero">
+            <h1>Campus Hub For Your Personal Needs.</h1>
+            <h2>
+              From old furniture to used gaming systems, buy and sell goods with
+              other UTSA students.
+            </h2>
           </div>
-          <div>
-            <h1>More text this time in grid.</h1>
-            <h2>More subtext.</h2>
+          <div className="img-container">
+            <img
+              className="shopping-svg"
+              src={shoppingSvgPath}
+              alt="People shopping"
+            />
           </div>
         </div>
       </div>

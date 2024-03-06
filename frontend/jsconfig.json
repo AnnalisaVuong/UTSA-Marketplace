@@ -13,6 +13,7 @@
     },
     "checkJs": true,
     "strictNullChecks": true,
+    "strict": true,
     "target": "ESNext",
     "module": "ESNext"
   },
