@@ -78,3 +78,8 @@ body {
     text-align: center;
   }
 }
+
+.hero-section-white {
+  height: 100vh;
+  background-color: #f9f9f9;
+}

@@ -1,5 +1,7 @@
 import Header from "@components/Header";
 import "@style/LandingPage.css";
+
+// @ts-ignore - Tell LSP to ignore this line.
 import shoppingSvgPath from "@assets/shopping.svg";
 
 /**
@@ -33,6 +35,7 @@ export default function LandingPage() {
           </div>
         </div>
       </div>
+      <div className="hero-section-white"></div>
     </>
   );
 }

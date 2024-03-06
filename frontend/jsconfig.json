@@ -11,6 +11,7 @@
       "@routes/*": ["routes/*"],
       "@style/*": ["style/*"]
     },
+    "types": ["node"],
     "checkJs": true,
     "strictNullChecks": true,
     "strict": true,
