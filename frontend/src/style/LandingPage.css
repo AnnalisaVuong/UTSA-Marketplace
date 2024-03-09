@@ -10,7 +10,7 @@ body {
 .hero > h1 {
   margin: 0;
   color: #ffffff;
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   line-height: 1.4em;
   margin-bottom: 1em;
 }
@@ -24,9 +24,10 @@ body {
 .landing-hero-header {
   background-color: #0c2340;
   width: 100vw;
+  max-width: 100%;
   box-sizing: border-box;
-  height: 100vh;
-  padding: 0 2em;
+  height: 550px;
+  padding: 0 0em;
 }
 
 .landing-grid {
@@ -77,9 +78,4 @@ body {
     font-size: 0.8rem;
     text-align: center;
   }
-}
-
-.hero-section-white {
-  height: 100vh;
-  background-color: #f9f9f9;
 }

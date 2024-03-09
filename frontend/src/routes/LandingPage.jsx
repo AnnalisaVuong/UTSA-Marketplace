@@ -20,7 +20,7 @@ export default function LandingPage() {
       <div className="landing-hero-header">
         <div className="landing-grid">
           <div className="hero">
-            <h1>Campus Hub For Your Personal Needs.</h1>
+            <h1>A Campus Hub For Your Personal Needs.</h1>
             <h2>
               From old furniture to used gaming systems, buy and sell goods with
               other UTSA students.
@@ -35,7 +35,6 @@ export default function LandingPage() {
           </div>
         </div>
       </div>
-      <div className="hero-section-white"></div>
     </>
   );
 }
