@@ -15,7 +15,7 @@ a {
   transition:
     background-color 400ms,
     filter 400ms;
-  filter: drop-shadow(0 2px 6px black);
+  filter: drop-shadow(0 1px 1px gray);
   position: sticky;
   top: 0px;
 }

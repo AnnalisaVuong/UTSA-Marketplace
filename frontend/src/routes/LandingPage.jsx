@@ -1,5 +1,6 @@
 import Header from "@components/Header";
 import "@style/LandingPage.css";
+import InfoBox from "@components/InfoBox";
 
 // @ts-ignore - Tell LSP to ignore this line.
 import shoppingSvgPath from "@assets/shopping.svg";
@@ -34,6 +35,17 @@ export default function LandingPage() {
             />
           </div>
         </div>
+      </div>
+      <div className="hero-section-white">
+        <div className="hero hero-white">
+          <h3>Features</h3>
+          <h1>Support The Local UTSA Economy.</h1>
+          <h2>
+            There are countless ways to buy and sell items that makes supporting
+            the local campus ecosystem a breeze.
+          </h2>
+        </div>
+        <InfoBox></InfoBox>
       </div>
     </>
   );
