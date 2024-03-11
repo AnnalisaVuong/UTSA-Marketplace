@@ -53,6 +53,7 @@ export default function Header() {
               <a href="/features">Features</a>
               <a href="/overview">Overview</a>
             </div>
+            <a href="/admin">Admin</a>
             <a className="login" id="login" href="/login">
               Log In
             </a>

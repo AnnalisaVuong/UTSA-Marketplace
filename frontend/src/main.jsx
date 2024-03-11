@@ -2,9 +2,17 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { LandingPageRoute } from "@routes/routes";
+// @ts-ignore
+import Admin from "@routes/AdminCreation";
 
 // Add new routes here.
-const router = createBrowserRouter([LandingPageRoute]);
+const router = createBrowserRouter([
+  LandingPageRoute,
+{
+    path: "admin/",
+    element: <Admin />,
+},
+]);
 
 // Select root element for rendering ReactDOM tree.
 const rootElement = document.getElementById("root");
