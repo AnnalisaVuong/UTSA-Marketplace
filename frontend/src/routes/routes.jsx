@@ -1,4 +1,5 @@
 import LandingPage from "./LandingPage";
+import Login from "./Login";
 
 /**
  * @description Object representing the route and component that
@@ -9,4 +10,11 @@ import LandingPage from "./LandingPage";
 export const LandingPageRoute = {
   path: "/",
   element: <LandingPage />,
+  children: [
+    {
+    path: "/Login",
+    element: <Login />,
+    }
+  ]
 };
+
