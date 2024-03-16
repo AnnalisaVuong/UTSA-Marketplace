@@ -1,7 +1,5 @@
 import Header from "@components/Header";
 import InfoBox from "@components/InfoBox";
-
-// @ts-ignore - Tell LSP to ignore this line.
 import shoppingSvgPath from "@assets/shopping.svg";
 
 /**
