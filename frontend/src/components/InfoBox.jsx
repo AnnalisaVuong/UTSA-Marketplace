@@ -1,5 +1,3 @@
-import "@style/InfoBox.css";
-
 // @ts-ignore
 import cameraPath from "@assets/camera.svg";
 
@@ -18,12 +16,19 @@ import cameraPath from "@assets/camera.svg";
  */
 function InfoItem({ img, alt, title, children }) {
   return (
-    <div className="info-item">
-      <div className="logo-background">
-        <img src={img} alt={alt} />
+    <div className="border-black border-[0.5px] p-4 rounded-xl flex gap-5 flex-col content-evenly">
+      <div className="flex items-center bg-[#0c2340] rounded-lg p-2 max-w-10">
+        <img
+          src={img}
+          alt={alt}
+          style={{
+            filter:
+              "invert(99%) sepia(31%) saturate(230%) hue-rotate(245deg) brightness(112%) contrast(100%)",
+          }}
+        />
       </div>
-      <h1>{title}</h1>
-      <p>{children}</p>
+      <h1 className="text-sm lg:text-xl">{title}</h1>
+      <p className="text-xs text-gray-500">{children}</p>
     </div>
   );
 }
@@ -53,5 +58,9 @@ export default function InfoBox() {
     );
   }
 
-  return <div className="info-grid">{elements}</div>;
+  return (
+    <div className="grid lg:grid-cols-3 gap-6 w-4/5 h-4/6 grid-cols-1">
+      {elements}
+    </div>
+  );
 }

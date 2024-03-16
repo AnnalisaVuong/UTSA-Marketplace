@@ -20,6 +20,8 @@ export function useUndersize(upperBound) {
       setUndersize(event.matches);
     });
 
+    setUndersize(windowSizeQuery.matches);
+
     return () => {
       windowSizeQuery.addEventListener("change", (event) => {
         setUndersize(event.matches);
