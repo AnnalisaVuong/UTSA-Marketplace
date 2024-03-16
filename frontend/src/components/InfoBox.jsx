@@ -1,4 +1,3 @@
-// @ts-ignore
 import cameraPath from "@assets/camera.svg";
 
 /**
