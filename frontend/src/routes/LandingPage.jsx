@@ -1,5 +1,4 @@
 import Header from "@components/Header";
-import "@style/LandingPage.css";
 import InfoBox from "@components/InfoBox";
 
 // @ts-ignore - Tell LSP to ignore this line.
@@ -18,29 +17,29 @@ export default function LandingPage() {
   return (
     <>
       <Header />
-      <div className="landing-hero-header">
-        <div className="landing-grid">
-          <div className="hero">
-            <h1>A Campus Hub For Your Personal Needs.</h1>
-            <h2>
+      <div className="bg-[#0c2340] w-[100%] max-w-[100%] box-border h-[100%] py-16">
+        <div className="grid md:grid-cols-2 gap-8 w-[100%] items-center justify-center h-[100%]">
+          <div className="max-w-[70%] flex gap-3 lg:gap-8 flex-col justify-self-center">
+            <h1 className="text-zinc-50 lg:text-4xl text-2xl text-center md:text-left">
+              A Campus Hub For Your Personal Needs.
+            </h1>
+            <h2 className="md:text-left text-center text-md text-zinc-500 font-bold">
               From old furniture to used gaming systems, buy and sell goods with
               other UTSA students.
             </h2>
           </div>
-          <div className="img-container">
-            <img
-              className="shopping-svg"
-              src={shoppingSvgPath}
-              alt="People shopping"
-            />
+          <div>
+            <img src={shoppingSvgPath} alt="People shopping" />
           </div>
         </div>
       </div>
-      <div className="hero-section-white">
-        <div className="hero hero-white">
-          <h3>Features</h3>
-          <h1>Support The Local UTSA Economy.</h1>
-          <h2>
+      <div className="h-[100%] flex flex-col bg-[#f9f9f9] items-center justify-evenly py-16 gap-16">
+        <div className="flex flex-col items-center lg:max-w-[50%] max-w-[80%] gap-2 text-center">
+          <h3 className="text-xl text-gray-500">Features</h3>
+          <h1 className="text-gray-950 lg:text-3xl text-2xl">
+            Support The Local UTSA Economy.
+          </h1>
+          <h2 className="">
             There are countless ways to buy and sell items that makes supporting
             the local campus ecosystem a breeze.
           </h2>

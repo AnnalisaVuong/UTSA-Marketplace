@@ -1,7 +1,27 @@
 import { useEffect, useState, useRef } from "react";
 import { useUndersize, useScroll } from "@hooks/headerHooks";
 import HeaderDropdown from "@components/HeaderDropdown";
-import "@style/Header.css";
+
+/**
+ * @type {Record<string, Object>} headerStyles
+ *
+ * @description A collection of styles to represent
+ * different themes that will be applied to the header.
+ */
+const headerStyles = {
+  white: {
+    backgroundColor: "#ffffff",
+    transition: "background-color 400ms, filter 400ms",
+    filter: "drop-shadow(0 1px 1px gray)",
+    position: "sticky",
+    top: "0px",
+  },
+  blue: {
+    backgroundColor: "#0c2340",
+    transition: "background-color 400ms, filter 400ms",
+    color: "#ffffff",
+  },
+};
 
 /**
  * Component: Header
@@ -29,7 +49,7 @@ export default function Header() {
 
   // Set the height of the header when the component mounts.
   useEffect(() => {
-    /** @type {HTMLElement | null} - Type could be defined at this state */
+    /** @type {HTMLElement | null} - Element ref could be defined at this state */
     const elementOption = headerElement.current;
 
     // Check if the ref is null
@@ -44,22 +64,35 @@ export default function Header() {
 
   return (
     <>
-      <div className={`container header-${theme}`} ref={headerElement}>
-        <h1>Rowdy Marketplace</h1>
+      <header
+        className="flex justify-between px-[8vw] py-4 items-center h-2/6"
+        style={headerStyles[theme]}
+        ref={headerElement}
+      >
+        <h1 className="text-xl md:text-2xl lg:text-3xl">Rowdy Marketplace</h1>
         {!undersize ? (
           <>
-            <div className="header-options">
+            <nav className="flex items-center justify-center gap-16 flex-1 [&>a:hover]:text-orange-500">
               <a href="/home">Home</a>
               <a href="/features">Features</a>
               <a href="/overview">Overview</a>
-            </div>
-            <a className="login" id="login" href="/login">
+            </nav>
+            <a
+              className="px-8 py-2 rounded-lg hover:!border-orange-500 hover:text-orange-500"
+              style={{
+                border: "2px solid #ffffff",
+                borderColor: theme == "white" ? "#222222" : "#ffffff",
+              }}
+              id="login"
+              href="/login"
+            >
               Log In
             </a>
           </>
         ) : (
           <button
-            className="btn-dropdown"
+            className="text-2xl"
+            style={{ color: theme == "white" ? "#222222" : undefined }}
             onClick={() => setDropdownToggled(!dropdownToggled)}
           >
             ...
@@ -70,7 +103,7 @@ export default function Header() {
           <a href="/features">Features</a>
           <a href="/overview">Overview</a>
         </HeaderDropdown>
-      </div>
+      </header>
     </>
   );
 }
