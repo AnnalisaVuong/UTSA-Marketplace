@@ -1,5 +1,3 @@
-import "@style/HeaderDropdown.css";
-
 /**
  * Component: HeaderDropdown
  *
@@ -15,8 +13,11 @@ import "@style/HeaderDropdown.css";
 export default function HeaderDropdown({ display, children, offset }) {
   return (
     <div
-      className={`dropdown${display ? " visible" : ""}`}
-      style={{ top: offset + 5 }}
+      className="rounded-lg flex w-[90vw] mx-auto right-0 left-0 bg-white absolute flex-col justify-around items-start transition-all overflow-hidden [&>*]:text-gray-950 [&>*:hover]:text-orange-500 pl-10"
+      style={{
+        top: offset,
+        height: display ? "20vh" : "0vh",
+      }}
     >
       {children}
     </div>

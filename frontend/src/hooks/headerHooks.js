@@ -15,9 +15,19 @@ export function useUndersize(upperBound) {
   const [undersize, setUndersize] = useState(false);
   const windowSizeQuery = matchMedia(`(max-width: ${upperBound}px)`);
 
-  windowSizeQuery.addEventListener("change", (event) => {
-    setUndersize(event.matches);
-  });
+  useEffect(() => {
+    windowSizeQuery.addEventListener("change", (event) => {
+      setUndersize(event.matches);
+    });
+
+    setUndersize(windowSizeQuery.matches);
+
+    return () => {
+      windowSizeQuery.addEventListener("change", (event) => {
+        setUndersize(event.matches);
+      });
+    };
+  }, []);
 
   return undersize;
 }
