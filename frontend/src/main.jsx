@@ -10,7 +10,6 @@ import { UserCreationRoute } from "@routes/CreateUser";
 const router = createBrowserRouter([
   LandingPageRoute,
   UserCreationRoute,
-  LandingPageRoute,
   {
     path: "/admin",
     element: <Admin />,
