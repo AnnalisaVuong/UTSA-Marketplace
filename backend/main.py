@@ -1,31 +1,32 @@
-from flask import Flask, Blueprint
+from flask import Flask, Blueprint, request, jsonify
 
 def create_app():
     app = Flask(__name__)
 
-
-    admin_bp = Blueprint('admin', __name__)
-
-    @admin_bp.route('/admin/create')
-    def admin_create():
-        return 'Admin Create Page'
-
-    @admin_bp.route('/admin/edit')
-    def admin_edit():
-        return 'Admin Edit Page'
-     
     user_bp = Blueprint('user', __name__)
 
-    @user_bp.route('/user/create')
+    @user_bp.route('/user/create', methods=['POST'])
     def user_create():
-        return 'User Create Page'
+         if request.is_json:
+            data = request.json
+            username = data.get('username')
+            password = data.get('password')
+            first_name = data.get('first_name')
+            last_name = data.get('last_name')
+            email = data.get('email')
+            phone_number = data.get('phone_number')
 
-    @user_bp.route('/user/edit')
-    def user_edit():
-        return 'User Edit Page'
+            
+            print(f"Received data: Username: {username}, Password: {password}, First Name: {first_name}, Last Name: {last_name}, Email: {email}, Phone Number: {phone_number}")
+
+            return jsonify({'message': 'User account created successfully'})
+         else:
+            return jsonify({'error': 'Invalid JSON'}), 400
+
+
+
 
  
-    app.register_blueprint(admin_bp)
     app.register_blueprint(user_bp)
 
 
