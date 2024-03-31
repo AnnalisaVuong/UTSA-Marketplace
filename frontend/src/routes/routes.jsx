@@ -1,4 +1,6 @@
 import LandingPage from "./LandingPage";
+import LoginPage from "./LoginPage";
+import CreateAccount from "./CreateAccount";
 
 /**
  * @description Object representing the route and component that
@@ -9,4 +11,12 @@ import LandingPage from "./LandingPage";
 export const LandingPageRoute = {
   path: "/",
   element: <LandingPage />,
+};
+export const LoginPageRoute = {
+  path: "/Login",
+  element: <LoginPage />,
+};
+export const CreateAccountRoute = {
+  path: "/CreateAccount",
+  element: <CreateAccount />,
 };

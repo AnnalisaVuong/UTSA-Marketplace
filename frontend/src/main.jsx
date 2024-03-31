@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { LandingPageRoute } from "@routes/routes";
+import { LoginPageRoute } from "@routes/routes";
+import { CreateAccountRoute } from "@routes/routes";
 // @ts-ignore
 import Admin from "@routes/AdminCreation";
 
@@ -11,7 +13,7 @@ const router = createBrowserRouter([
 {
     path: "admin/",
     element: <Admin />,
-},
+}, LoginPageRoute, CreateAccountRoute,
 ]);
 
 // Select root element for rendering ReactDOM tree.
