@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "@style/Admin.css";
 
 const BACKEND_URL = "http://localhost:5000";
 
@@ -32,13 +33,13 @@ export default function Example() {
 
     const responseJson = await res.json();
 
+    // For now simply log the response from the backend.
     console.log(responseJson);
   }
 
   /** @param {React.ChangeEvent<HTMLInputElement>} event */
   function handleFormChange(event) {
     const escaped = event.target.name.replace("-", "_");
-    console.log(escaped);
     setFormData({
       ...formData,
       [escaped]: event.target.value,
@@ -225,4 +226,3 @@ export default function Example() {
     </>
   );
 }
-
