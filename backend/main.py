@@ -24,11 +24,11 @@ def create_app():
             print(to_print)
 
             return jsonify(
-                {"message": "User account created successfully", "msg": to_print}
+                {"message": "User account created successfully", "msg": to_print}, 200
             )
 
         else:
-            return jsonify({"error": "Invalid JSON"}), 400
+            return jsonify({"error": "Invalid JSON"})
 
     @admin_bp.route("/admin/create", methods=["POST"])
     def admin_create():
@@ -41,11 +41,11 @@ def create_app():
             email = data.get("email")
             phone_number = data.get("phone_number")
 
-            print(
-                f"Received data: Username: {username}, Password: {password}, First Name: {first_name}, Last Name: {last_name}, Email: {email}, Phone Number: {phone_number}"
-            )
+            to_print = f"Received data: Username: {username}, Password: {password}, First Name: {first_name}, Last Name: {last_name}, Email: {email}, Phone Number: {phone_number}"
 
-            return jsonify({"message": "User account created successfully"})
+            return jsonify(
+                {"message": "User account created successfully", "msg": to_print}
+            )
         else:
             return jsonify({"error": "Invalid JSON"}), 400
 
