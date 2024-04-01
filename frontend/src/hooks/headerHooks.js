@@ -27,7 +27,7 @@ export function useUndersize(upperBound) {
         setUndersize(event.matches);
       });
     };
-  }, []);
+  }, [windowSizeQuery]);
 
   return undersize;
 }

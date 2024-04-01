@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useFormState } from "@hooks/formHooks";
 
 const BACKEND_URL = "http://localhost:5000";
 
@@ -19,50 +19,21 @@ const BACKEND_URL = "http://localhost:5000";
 // confirm_password.onkeyup = validatePassword;
 
 export default function Admin() {
-  const [formData, setFormData] = useState({});
-
-  /** @param {React.FormEvent<HTMLFormElement>} event */
-  async function handleSubmit(event) {
-    event.preventDefault();
-
-    const formDataString = JSON.stringify(formData);
-
-    const extraHeaders = new Headers();
-    extraHeaders.append("Accept", "application/json");
-    extraHeaders.append("Content-Type", "application/json");
-
-    const res = await fetch(BACKEND_URL + "/admin/create", {
-      method: "POST",
-      headers: extraHeaders,
-      body: formDataString,
-    });
-
-    const responseJson = await res.json();
-
-    // For now simply log the response from the backend.
-    console.log(responseJson);
-  }
-
-  /** @param {React.ChangeEvent<HTMLInputElement>} event */
-  function handleFormChange(event) {
-    const escaped = event.target.name.replace("-", "_");
-    setFormData({
-      ...formData,
-      [escaped]: event.target.value,
-    });
-  }
+  const [setFormData, submitData] = useFormState(
+    new URL(BACKEND_URL + "/admin/create"),
+  );
 
   return (
     <>
       <div className="container">
         <h1 className="color header">Create Account </h1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={submitData}>
           <div>
             <label htmlFor="username" className="color bold">
               User Name
             </label>
             <input
-              onChange={handleFormChange}
+              onChange={setFormData}
               type="text"
               id="username"
               name="username"
@@ -77,7 +48,7 @@ export default function Admin() {
               Password
             </label>
             <input
-              onChange={handleFormChange}
+              onChange={setFormData}
               type="password"
               id="password"
               name="password"
@@ -92,7 +63,7 @@ export default function Admin() {
               Confirm Password
             </label>
             <input
-              onChange={handleFormChange}
+              onChange={setFormData}
               type="confirm-password"
               id="confirm-password"
               name="confirm-password"
@@ -107,7 +78,7 @@ export default function Admin() {
               First Name
             </label>
             <input
-              onChange={handleFormChange}
+              onChange={setFormData}
               type="text"
               id="first-name"
               name="first-name"
@@ -122,7 +93,7 @@ export default function Admin() {
               Last Name
             </label>
             <input
-              onChange={handleFormChange}
+              onChange={setFormData}
               type="text"
               id="last-name"
               name="last-name"
@@ -137,7 +108,7 @@ export default function Admin() {
               Email Address
             </label>
             <input
-              onChange={handleFormChange}
+              onChange={setFormData}
               type="email"
               id="email"
               name="email"
@@ -152,7 +123,7 @@ export default function Admin() {
               Phone Number
             </label>
             <input
-              onChange={handleFormChange}
+              onChange={setFormData}
               type="tel"
               id="phone-number"
               name="phone-number"

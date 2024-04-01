@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useFormState } from "@hooks/formHooks";
 import "@style/Admin.css";
 
 const BACKEND_URL = "http://localhost:5000";
@@ -13,38 +13,9 @@ const BACKEND_URL = "http://localhost:5000";
  * @returns {React.ReactElement} Component to be rendered at the Create account page route.
  */
 export default function Example() {
-  const [formData, setFormData] = useState({});
-
-  /** @param {React.FormEvent<HTMLFormElement>} event */
-  async function handleSubmit(event) {
-    event.preventDefault();
-
-    const formDataString = JSON.stringify(formData);
-
-    const extraHeaders = new Headers();
-    extraHeaders.append("Accept", "application/json");
-    extraHeaders.append("Content-Type", "application/json");
-
-    const res = await fetch(BACKEND_URL + "/user/create", {
-      method: "POST",
-      headers: extraHeaders,
-      body: formDataString,
-    });
-
-    const responseJson = await res.json();
-
-    // For now simply log the response from the backend.
-    console.log(responseJson);
-  }
-
-  /** @param {React.ChangeEvent<HTMLInputElement>} event */
-  function handleFormChange(event) {
-    const escaped = event.target.name.replace("-", "_");
-    setFormData({
-      ...formData,
-      [escaped]: event.target.value,
-    });
-  }
+  const [setFormData, onFormSubmit] = useFormState(
+    new URL(BACKEND_URL + "/user/create"),
+  );
 
   return (
     <>
@@ -57,7 +28,7 @@ export default function Example() {
           </div>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" onSubmit={handleSubmit}>
+            <form className="space-y-6" onSubmit={onFormSubmit}>
               <div>
                 <label
                   htmlFor="username"
@@ -67,7 +38,7 @@ export default function Example() {
                 </label>
                 <div className="mt-2">
                   <input
-                    onChange={handleFormChange}
+                    onChange={setFormData}
                     id="username"
                     name="username"
                     type="username"
@@ -89,7 +60,7 @@ export default function Example() {
                 </div>
                 <div className="mt-2">
                   <input
-                    onChange={handleFormChange}
+                    onChange={setFormData}
                     id="password"
                     name="password"
                     type="password"
@@ -111,7 +82,7 @@ export default function Example() {
                 </div>
                 <div className="mt-2">
                   <input
-                    onChange={handleFormChange}
+                    onChange={setFormData}
                     id="confirm-password"
                     name="confirm-password"
                     type="confirm-password"
@@ -130,7 +101,7 @@ export default function Example() {
                 </label>
                 <div className="mt-2">
                   <input
-                    onChange={handleFormChange}
+                    onChange={setFormData}
                     id="email"
                     name="email"
                     type="email"
@@ -150,7 +121,7 @@ export default function Example() {
                 </label>
                 <div className="mt-2">
                   <input
-                    onChange={handleFormChange}
+                    onChange={setFormData}
                     id="first-name"
                     name="first-name"
                     type="first-name"
@@ -170,7 +141,7 @@ export default function Example() {
                 </label>
                 <div className="mt-2">
                   <input
-                    onChange={handleFormChange}
+                    onChange={setFormData}
                     id="last-name"
                     name="last-name"
                     type="last-name"
@@ -190,7 +161,7 @@ export default function Example() {
                 </label>
                 <div className="mt-2">
                   <input
-                    onChange={handleFormChange}
+                    onChange={setFormData}
                     id="phone-number"
                     name="phone-number"
                     type="phone-number"
