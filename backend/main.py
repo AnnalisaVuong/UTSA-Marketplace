@@ -24,11 +24,27 @@ def create_app():
             print(to_print)
 
             return jsonify(
-                {"message": "User account created successfully", "msg": to_print}, 200
+                {"message": "User account created successfully", "msg": to_print}
             )
 
         else:
             return jsonify({"error": "Invalid JSON"})
+
+    @user_bp.route("/user/login", methods=["POST"])
+    def user_login():
+        res = None
+        if request.is_json:
+            request_data = request.get_json()
+            res = jsonify(
+                {"message": "User successfully logged in.", "data": str(request_data)}
+            )
+            res.status_code = 200
+
+        else:
+            res = jsonify({"message": "Error in request object."})
+            res.status_code = 200
+
+        return res
 
     @admin_bp.route("/admin/create", methods=["POST"])
     def admin_create():
