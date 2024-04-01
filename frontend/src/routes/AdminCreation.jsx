@@ -55,9 +55,10 @@ return (
     <>
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#0c2340] text-white">
         <h1 className="text-4xl font-extrabold leading-none tracking-tight md:text-5xl lg:text-6xl dark:text-white mb-10">Create Account </h1>
+
         <form 
-            className="w-full max-w-md container" 
-            onSubmit={submitData}>
+        className="w-full max-w-md"
+        onSubmit={submitData}>
             <div className="flex flex-row items-center">
                 <label htmlFor="username" className="basis-1/4">
                     Username: 
