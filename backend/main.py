@@ -1,9 +1,13 @@
 from flask import Flask, Blueprint, request, jsonify
+from os import environ as env
 from flask_cors import CORS
+from oauth_handler import oauth
+import dotenv
 
 
 def create_app():
     app = Flask(__name__)
+    app.secret_key = env["FLASK_APP_SECRET_KEY"]
     CORS(app)  # Enable CORS
 
     user_bp = Blueprint("user", __name__)
@@ -67,6 +71,7 @@ def create_app():
 
     app.register_blueprint(user_bp)
     app.register_blueprint(admin_bp)
+    app.register_blueprint(oauth)
 
     @app.route("/")
     def hello_world():
@@ -76,5 +81,6 @@ def create_app():
 
 
 if __name__ == "__main__":
+    dotenv.load_dotenv()
     app = create_app()
     app.run(debug=True)
