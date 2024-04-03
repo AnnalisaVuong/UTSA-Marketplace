@@ -11,7 +11,7 @@ import { useFormState } from "@hooks/formHooks";
  */
 export default function Example() {
   const [setFormData, handleSubmit] = useFormState(
-    new URL("http://localhost:5000/user/login"),
+    new URL("http://localhost:5000/"),
   );
 
   return (
@@ -93,4 +93,3 @@ export default function Example() {
     </>
   );
 }
-
