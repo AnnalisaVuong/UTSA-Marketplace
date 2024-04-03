@@ -43,7 +43,13 @@ class UserInformation(db.Model):
     userpassword = db.Column(db.String(100), nullable=False)
     #userprofilepic = db.Column(db.String(100), nullable=True)
 
+#admin info table (add more to match user info?)
+class AdminInformation(db.Model):
+    __tablename__ = 'admin_information'
 
+    adminid = db.Column(db.Integer, primary_key=True)
+    admin_username = db.Column(db.String(100), unique=True, nullable=False)
+    admin_password = db.Column(db.String(100), nullable=False)
    
 
 
