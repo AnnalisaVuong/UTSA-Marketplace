@@ -12,3 +12,11 @@ class TransactionHistory(db.Model):
     transdate = db.Column(db.DateTime, nullable=False)
     trans_status = db.Column(db.String(50), nullable=False)
 
+class TradingPost(db.Model):
+    __tablename__ = "trading_post"
+
+    post_id = db.Column(db.Integer, primary_key=True)
+    postlocation = db.Column(db.String(100), nullable=False)
+    post_availability = db.Column(db.Boolean, nullable=False)
+
+
