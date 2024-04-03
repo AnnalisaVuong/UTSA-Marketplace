@@ -1,0 +1,14 @@
+from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
+
+#Transaction Info Table
+class TransactionHistory(db.Model):
+    __tablename__ = "transaction_history"
+
+    trans_id = db.Column(db.Integer, primary_key=True)
+    item_id = db.Column(db.Integer, db.ForeignKey('item_listing.item_id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user_information.userid'), nullable=False)
+    transdate = db.Column(db.DateTime, nullable=False)
+    trans_status = db.Column(db.String(50), nullable=False)
+
