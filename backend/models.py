@@ -32,6 +32,18 @@ class ItemListing(db.Model):
     itemavailability = db.Column(db.Boolean, nullable=False)
     itemposteddate = db.Column(db.DateTime, nullable=False)
 
+#User Info Table
+class UserInformation(db.Model):
+    __tablename__ = 'user_information'
+
+    userid = db.Column(db.Integer, primary_key=True)
+    userfullname = db.Column(db.String(100), nullable=False)
+    useremail = db.Column(db.String(100), unique=True, nullable=False)
+    userusername = db.Column(db.String(100), unique=True, nullable=False)
+    userpassword = db.Column(db.String(100), nullable=False)
+    #userprofilepic = db.Column(db.String(100), nullable=True)
+
+
    
 
 
