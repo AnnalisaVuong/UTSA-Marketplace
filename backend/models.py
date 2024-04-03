@@ -12,11 +12,26 @@ class TransactionHistory(db.Model):
     transdate = db.Column(db.DateTime, nullable=False)
     trans_status = db.Column(db.String(50), nullable=False)
 
+#Trading Post Table
 class TradingPost(db.Model):
     __tablename__ = "trading_post"
 
     post_id = db.Column(db.Integer, primary_key=True)
     postlocation = db.Column(db.String(100), nullable=False)
     post_availability = db.Column(db.Boolean, nullable=False)
+
+#Item Listing Table
+class ItemListing(db.Model):
+    __tablename__ = "item_listing"
+
+    item_id = db.Column(db.Integer, primary_key=True)
+    userid = db.Column(db.Integer, db.ForeignKey('user_information.userid'), nullable=False)
+    itemtitle = db.Column(db.String(100), nullable=False)
+    itemdescription = db.Column(db.Text, nullable=False)
+    itemprice = db.Column(db.Float, nullable=False)
+    itemavailability = db.Column(db.Boolean, nullable=False)
+    itemposteddate = db.Column(db.DateTime, nullable=False)
+
+   
 
 
