@@ -7,6 +7,11 @@ from flask_sqlalchemy import SQLAlchemy
 load_dotenv()
 
 
+print("DB_USERNAME:", os.getenv('DB_USERNAME'))
+print("DB_PASSWORD:", os.getenv('DB_PASSWORD'))
+print("DB_HOST:", os.getenv('DB_HOST'))
+print("DB_NAME:", os.getenv('DB_NAME'))
+
 
 
 
