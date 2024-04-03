@@ -7,6 +7,9 @@ from flask_sqlalchemy import SQLAlchemy
 load_dotenv()
 
 
+db = SQLAlchemy()
+
+
 print("DB_USERNAME:", os.getenv('DB_USERNAME'))
 print("DB_PASSWORD:", os.getenv('DB_PASSWORD'))
 print("DB_HOST:", os.getenv('DB_HOST'))
@@ -18,6 +21,14 @@ print("DB_NAME:", os.getenv('DB_NAME'))
 def create_app():
     app = Flask(__name__)
     CORS(app)  # Enable CORS
+
+    #Database Config
+    app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    
+    db.init_app(app)
+
+
 
     user_bp = Blueprint("user", __name__)
     admin_bp = Blueprint("admin", __name__)
