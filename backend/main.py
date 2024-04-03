@@ -1,5 +1,13 @@
+import os
 from flask import Flask, Blueprint, request, jsonify
 from flask_cors import CORS
+from dotenv import load_dotenv
+from flask_sqlalchemy import SQLAlchemy
+
+load_dotenv()
+
+
+
 
 
 def create_app():
