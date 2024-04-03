@@ -1,14 +1,26 @@
+import os
 from flask import Flask, Blueprint, request, jsonify
 from flask_cors import CORS
+from dotenv import load_dotenv
+from flask_sqlalchemy import SQLAlchemy
 
+load_dotenv()
+db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
     CORS(app)  # Enable CORS
 
+    #Database Config
+    app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+    db.init_app(app)
+    
     user_bp = Blueprint("user", __name__)
     admin_bp = Blueprint("admin", __name__)
 
+    #User Create Route
     @user_bp.route("/user/create", methods=["POST"])
     def user_create():
         if request.is_json:
@@ -30,6 +42,7 @@ def create_app():
         else:
             return jsonify({"error": "Invalid JSON"})
 
+    #User Login Route
     @user_bp.route("/user/login", methods=["POST"])
     def user_login():
         res = None
@@ -45,7 +58,8 @@ def create_app():
             res.status_code = 200
 
         return res
-
+    
+    #Admin Create Route
     @admin_bp.route("/admin/create", methods=["POST"])
     def admin_create():
         if request.is_json:
