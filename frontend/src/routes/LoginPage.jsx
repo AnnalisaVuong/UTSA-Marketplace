@@ -16,6 +16,7 @@ export default function Example() {
 
   return (
     <>
+      <a href="http://localhost:5000/user/oauth/google">Sign In With Google</a>
       <div className="flex min-h-full items-center flex-col justify-center px-6 py-12 lg:px-8">
         <div className="flex w-96 p-6 shadow-lg bg-orange-500 rounded-md flex-col justify-center">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
