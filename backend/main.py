@@ -3,6 +3,7 @@ from flask import Flask, Blueprint, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import text
 
 load_dotenv()
 db = SQLAlchemy()
@@ -20,12 +21,14 @@ def create_app():
     user_bp = Blueprint("user", __name__)
     admin_bp = Blueprint("admin", __name__)
 
+
     #User Create Route
     @user_bp.route("/user/create", methods=["POST"])
     def user_create():
         if request.is_json:
             data = request.get_json()
             username = data.get("username")
+            #call hash func
             password = data.get("password")
             first_name = data.get("first_name")
             last_name = data.get("last_name")
@@ -78,6 +81,15 @@ def create_app():
             )
         else:
             return jsonify({"error": "Invalid JSON"}), 400
+
+
+    @app.route("/test/db")
+    def test_db_connection():
+        try:
+            db.session.execute(text("SELECT 1"))
+            return jsonify({"message": "DB connected"})
+        except Exception as e:
+            return jsonify({"error": "failed", "details": str(e)}), 500
 
     app.register_blueprint(user_bp)
     app.register_blueprint(admin_bp)
