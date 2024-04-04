@@ -3,20 +3,34 @@ from flask import Flask, Blueprint, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import text
+from sqlalchemy import text, create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker, declarative_base
+
 
 load_dotenv()
-db = SQLAlchemy()
+
+engine = create_engine(f"postgresql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}")
+
+#scoped session
+db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
+
+Base = declarative_base()
+Base.query = db_session.query_property()
+
+
+def init_db():
+    from models import TransactionHistory, TradingPost, ItemListing, UserInformation, AdminInformation
+    Base.metadata.create_all(bind=engine)
 
 def create_app():
     app = Flask(__name__)
     CORS(app)  # Enable CORS
 
     #Database Config
-    app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
-    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    #app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
+    #app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-    db.init_app(app)
+   # db.init_app(app)
     
     user_bp = Blueprint("user", __name__)
     admin_bp = Blueprint("admin", __name__)
@@ -82,7 +96,7 @@ def create_app():
         else:
             return jsonify({"error": "Invalid JSON"}), 400
 
-
+    """
     @app.route("/test/db")
     def test_db_connection():
         try:
@@ -90,7 +104,7 @@ def create_app():
             return jsonify({"message": "DB connected"})
         except Exception as e:
             return jsonify({"error": "failed", "details": str(e)}), 500
-
+    """
     app.register_blueprint(user_bp)
     app.register_blueprint(admin_bp)
 
