@@ -2,8 +2,16 @@ import os
 from flask import Flask, Blueprint, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
-from sqlalchemy import text
-from models import db, TransactionHistory, TradingPost, ItemListing, UserInformation, AdminInformation
+from models import (
+    db,
+    TransactionHistory,
+    TradingPost,
+    ItemListing,
+    UserInformation,
+    AdminInformation,
+)
+from hashpass import hash_salt, verify_hash
+from uuid import uuid4
 
 load_dotenv()
 
@@ -12,8 +20,10 @@ app = Flask(__name__)
 
 CORS(app)  # Enable CORS
 
-#Database Config
-app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
+# Database Config
+app.config["SQLALCHEMY_DATABASE_URI"] = (
+    f"postgresql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
+)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app)
@@ -22,13 +32,14 @@ db.init_app(app)
 user_bp = Blueprint("user", __name__)
 admin_bp = Blueprint("admin", __name__)
 
-#User Create Route
+
+# User Create Route
 @user_bp.route("/user/create", methods=["POST"])
 def user_create():
     if request.is_json:
         data = request.get_json()
         username = data.get("username")
-        #call hash func
+        hashed_password, salt = hash_salt(username)  # call hash func
         password = data.get("password")
         first_name = data.get("first_name")
         last_name = data.get("last_name")
@@ -38,6 +49,16 @@ def user_create():
         to_print = f"Received data: Username: {username}, Password: {password}, First Name: {first_name}, Last Name: {last_name}, Email: {email}, Phone Number: {phone_number}"
         print(to_print)
 
+        user = UserInformation()
+        user.userid = uuid4()
+        user.userfullname = f"{first_name} {last_name}"
+        user.useremail = email
+        user.username = username
+        user.password = hashed_password
+        user.password_salt = salt
+        db.session.add(user)
+        db.session.commit()
+
         return jsonify(
             {"message": "User account created successfully", "msg": to_print}
         )
@@ -45,7 +66,8 @@ def user_create():
     else:
         return jsonify({"error": "Invalid JSON"})
 
-#User Login Route
+
+# User Login Route
 @user_bp.route("/user/login", methods=["POST"])
 def user_login():
     res = None
@@ -62,7 +84,8 @@ def user_login():
 
     return res
 
-#Admin Create Route
+
+# Admin Create Route
 @admin_bp.route("/admin/create", methods=["POST"])
 def admin_create():
     if request.is_json:
@@ -86,7 +109,6 @@ def admin_create():
 @app.route("/test/db")
 def test_db_connection():
     try:
-        db.session.execute(text("SELECT 1"))
         return jsonify({"message": "DB connected"})
     except Exception as e:
         return jsonify({"error": "failed", "details": str(e)}), 500
