@@ -1,9 +1,7 @@
-#from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, Integer, String
-from backend.database import Base
+from flask_sqlalchemy import SQLAlchemy
 
+db = SQLAlchemy()
 
-#db = SQLAlchemy()
 
 #Transaction Info Table
 class TransactionHistory(db.Model):
