@@ -2,19 +2,26 @@ services:
   db:
     image: postgres:latest
     restart: always
+    secrets:
+      - db_root_password
     environment:
-        POSTGRES_PASSWORD_FILE: /run/secrets/db_root_password
-        POSTGRES_USER: administrator
-        POSTGRES_DB: utsa_marketplace
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_root_password
+      POSTGRES_USER: administrator
+      POSTGRES_DB: utsa_marketplace
   backend:
+    ports:
+      - "5000:5000"
     depends_on:
       - db
-    links:
-      - db:database
     build:
       context: backend
+      dockerfile: Dockerfile
     restart: always
   frontend:
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
     build:
       context: frontend
 secrets:

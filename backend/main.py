@@ -22,7 +22,7 @@ CORS(app)  # Enable CORS
 
 # Database Config
 app.config["SQLALCHEMY_DATABASE_URI"] = (
-    f"postgres://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@database:{'DB_PORT'}/{os.getenv('DB_NAME')}"
+    f"postgresql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@db:5432/{os.getenv('DB_NAME')}"
 )
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -104,10 +104,19 @@ def test_db_connection():
         return jsonify({"error": "failed", "details": str(e)}), 500
 
 
+@app.route("/")
+def hello():
+    return "Hello World"
+
+
 app.register_blueprint(user_bp)
 app.register_blueprint(admin_bp)
 
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    app.run(
+        debug=True,
+        host="0.0.0.0",
+        port=5000,
+    )

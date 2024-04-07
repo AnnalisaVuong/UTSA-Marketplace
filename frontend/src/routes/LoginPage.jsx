@@ -1,5 +1,7 @@
 import { useFormState } from "@hooks/formHooks";
 
+const BACKEND_URL = "http://localhost:5000";
+
 /**
  * Route: Login Page
  *
@@ -11,7 +13,7 @@ import { useFormState } from "@hooks/formHooks";
  */
 export default function Example() {
   const [setFormData, handleSubmit] = useFormState(
-    new URL("http://localhost:5000/user/login"),
+    new URL(BACKEND_URL + "/user/login"),
   );
 
   return (
@@ -93,4 +95,3 @@ export default function Example() {
     </>
   );
 }
-
