@@ -22,8 +22,9 @@ CORS(app)  # Enable CORS
 
 # Database Config
 app.config["SQLALCHEMY_DATABASE_URI"] = (
-    f"postgresql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
+    f"postgres://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@database:{'DB_PORT'}/{os.getenv('DB_NAME')}"
 )
+
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app)
@@ -39,7 +40,6 @@ def user_create():
     if request.is_json:
         data = request.get_json()
         username = data.get("username")
-        hashed_password, salt = hash_salt(username)  # call hash func
         password = data.get("password")
         first_name = data.get("first_name")
         last_name = data.get("last_name")
@@ -48,16 +48,6 @@ def user_create():
 
         to_print = f"Received data: Username: {username}, Password: {password}, First Name: {first_name}, Last Name: {last_name}, Email: {email}, Phone Number: {phone_number}"
         print(to_print)
-
-        user = UserInformation()
-        user.userid = uuid4()
-        user.userfullname = f"{first_name} {last_name}"
-        user.useremail = email
-        user.username = username
-        user.password = hashed_password
-        user.password_salt = salt
-        db.session.add(user)
-        db.session.commit()
 
         return jsonify(
             {"message": "User account created successfully", "msg": to_print}

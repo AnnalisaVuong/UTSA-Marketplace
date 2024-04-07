@@ -24,4 +24,4 @@ dist-ssr
 .env
 venv/
 
-db_*.txt
+db_password.txt
