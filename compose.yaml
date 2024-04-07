@@ -1,0 +1,11 @@
+services:
+  db:
+    image: postgres:latest
+    restart: always
+  backend:
+    build:
+      context: backend
+    restart: always
+  frontend:
+    build:
+      context: frontend
