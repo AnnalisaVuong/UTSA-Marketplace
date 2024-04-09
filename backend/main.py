@@ -20,10 +20,17 @@ app = Flask(__name__)
 
 CORS(app)  # Enable CORS
 
+
+# Create the configuration string for the database.
+def create_config_string():
+    database_user = os.getenv("DB_USERNAME") or "default_user"
+    database_password = os.getenv("DB_PASSWORD") or "default_password"
+    database_name = os.getenv("DB_NAME") or "default_db_name"
+    return f"postgresql://{database_user}:{database_password}@db:5432/{database_name}"
+
+
 # Database Config
-app.config["SQLALCHEMY_DATABASE_URI"] = (
-    f"postgresql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@db:5432/{os.getenv('DB_NAME')}"
-)
+app.config["SQLALCHEMY_DATABASE_URI"] = create_config_string()
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
