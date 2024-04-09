@@ -1,6 +1,18 @@
 # UTSA-Marketplace
 This marketplace facilitates buying and selling among UTSA students, providing a convenient and secure environment for transactions
 
+## Docker [RECOMMENDED FOR THE GRADER]
+This application can be run through docker.  With docker installed, clone the project, change into the UTSA_Marketplace directory and run:
+```
+docker compose up --build -d
+```
+to detach from the instances.\
+Or run:
+```
+docker compose up --build
+```
+To run and see output on the command line.
+
 ## Installation and Running Instructions
 
 To install and run this project locally, follow these steps:
