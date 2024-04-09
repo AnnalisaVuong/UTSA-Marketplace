@@ -1,6 +1,8 @@
 import LandingPage from "./LandingPage";
 import LoginPage from "./LoginPage";
 import CreateAccount from "./CreateAccount";
+import CreatePost from "./CreatePost";
+
 
 /**
  * @description Object representing the route and component that
@@ -20,3 +22,7 @@ export const CreateAccountRoute = {
   path: "/CreateAccount",
   element: <CreateAccount />,
 };
+export const CreatePostRoute = {
+  path: "/CreatePost",
+  element: <CreatePost />
+}

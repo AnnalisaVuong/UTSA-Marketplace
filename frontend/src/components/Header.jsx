@@ -74,8 +74,8 @@ export default function Header() {
           <>
             <nav className="flex items-center justify-center gap-16 flex-1 [&>a:hover]:text-orange-500">
               <a href="/home">Home</a>
-              <a href="/features">Features</a>
-              <a href="/overview">Overview</a>
+              <a href="/catalog">Catalog</a>
+              <a href="/CreatePost">Create Post</a>
             </nav>
             <a
               className="px-8 py-2 rounded-lg hover:!border-orange-500 hover:text-orange-500"
@@ -100,8 +100,8 @@ export default function Header() {
         )}
         <HeaderDropdown display={dropdownToggled} offset={headerHeight}>
           <a href="/home">Home</a>
-          <a href="/features">Features</a>
-          <a href="/overview">Overview</a>
+          <a href="/posts">Posts</a>
+          <a href="/createPost">Create Post</a>
         </HeaderDropdown>
       </header>
     </>

@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { LandingPageRoute } from "@routes/routes";
 import { LoginPageRoute } from "@routes/routes";
 import { CreateAccountRoute } from "@routes/routes";
+import { CreatePostRoute } from "@routes/routes";
 import Admin from "@routes/AdminCreation";
 
 // Add new routes here.
@@ -15,6 +16,7 @@ const router = createBrowserRouter([
   },
   LoginPageRoute,
   CreateAccountRoute,
+  CreatePostRoute,
 ]);
 
 // Select root element for rendering ReactDOM tree.
