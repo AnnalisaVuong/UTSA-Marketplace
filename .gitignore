@@ -23,4 +23,10 @@ dist-ssr
 *.sw?
 .env
 venv/
+<<<<<<< HEAD
 db_password.txt
+=======
+
+db_password.txt
+__pycache__
+>>>>>>> a463f225abd84fa454d256ac002a1f336b71092b

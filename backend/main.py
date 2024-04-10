@@ -22,8 +22,9 @@ CORS(app)  # Enable CORS
 
 # Database Config
 app.config["SQLALCHEMY_DATABASE_URI"] = (
-    f"postgresql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
+    f"postgresql://{os.getenv('DB_USERNAME')}:{os.getenv('DB_PASSWORD')}@db:5432/{os.getenv('DB_NAME')}"
 )
+
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app)
@@ -37,31 +38,40 @@ admin_bp = Blueprint("admin", __name__)
 @user_bp.route("/user/create", methods=["POST"])
 def user_create():
     if request.is_json:
-        data = request.get_json()
-        username = data.get("username")
-        hashed_password, salt = hash_salt(username)  # call hash func
-        password = data.get("password")
-        first_name = data.get("first_name")
-        last_name = data.get("last_name")
-        email = data.get("email")
-        phone_number = data.get("phone_number")
+        try:
+            data = request.get_json()
+            username = data.get("username")
+            password = data.get("password")
+            confirm = data.get("confirm_password")
+            first_name = data.get("first_name")
+            last_name = data.get("last_name")
+            email = data.get("email")
+            phone_number = data.get("phone_number")
+        except:
+            return jsonify({"error": "Invalid user data provided"}), 400
 
-        to_print = f"Received data: Username: {username}, Password: {password}, First Name: {first_name}, Last Name: {last_name}, Email: {email}, Phone Number: {phone_number}"
-        print(to_print)
+        if confirm != password:
+            return jsonify({"error": "Confirm password must match password."}), 400
 
-        user = UserInformation()
-        user.userid = uuid4()
-        user.userfullname = f"{first_name} {last_name}"
-        user.useremail = email
-        user.username = username
-        user.password = hashed_password
-        user.password_salt = salt
-        db.session.add(user)
+        hashed_password, salt = hash_salt(password)
+        collision = UserInformation.query.filter_by(useremail=email).first()
+
+        if collision:
+            return jsonify({"error": "A user with the same email already exists."}), 400
+
+        new_user = UserInformation()
+        new_user.username = username
+        new_user.password = hashed_password
+        new_user.password_salt = salt
+        new_user.user_fname = first_name
+        new_user.user_lname = last_name
+        new_user.user_email = email
+        new_user.user_phone = phone_number
+
+        db.session.add(new_user)
         db.session.commit()
 
-        return jsonify(
-            {"message": "User account created successfully", "msg": to_print}
-        )
+        return jsonify({"message": "User account created successfully"})
 
     else:
         return jsonify({"error": "Invalid JSON"})
@@ -114,10 +124,19 @@ def test_db_connection():
         return jsonify({"error": "failed", "details": str(e)}), 500
 
 
+@app.route("/")
+def hello():
+    return "Hello World"
+
+
 app.register_blueprint(user_bp)
 app.register_blueprint(admin_bp)
 
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    app.run(
+        debug=True,
+        host="0.0.0.0",
+        port=5000,
+    )
