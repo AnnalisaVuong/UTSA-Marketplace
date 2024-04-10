@@ -122,7 +122,7 @@ def user_login():
 
     try:
         login_data = request.get_json()
-        email = login_data["email"]
+        username = login_data["username"]
         password = login_data["password"]
     except KeyError:
         return jsonify_error(
@@ -131,8 +131,7 @@ def user_login():
             status=400,
         )
 
-    user = UserInformation.query.filter_by(useremail=email).first()
-    userdict = user.__dict__
+    user = UserInformation.query.filter_by(username=username).first()
 
     if not (user and verify_hash(password, user.password, user.password_salt)):
         return jsonify_error(
@@ -141,6 +140,7 @@ def user_login():
             status=400,
         )
 
+    userdict = user.__dict__
     return_object = {
         key: userdict[key] for key in ["userid", "user_phone", "username", "useremail"]
     }
