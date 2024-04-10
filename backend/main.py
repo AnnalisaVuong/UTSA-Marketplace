@@ -1,7 +1,12 @@
 import os
-from flask import Flask, Blueprint, request, jsonify
+from hashpass import hash_salt, verify_hash
+from flask import Flask, Blueprint, Response, request, jsonify, redirect
+from sqlalchemy import or_
 from flask_cors import CORS
 from dotenv import load_dotenv
+from api_utils import jsonify_error
+import jwt
+
 from models import (
     db,
     TransactionHistory,
@@ -10,8 +15,6 @@ from models import (
     UserInformation,
     AdminInformation,
 )
-from hashpass import hash_salt, verify_hash
-from uuid import uuid4
 
 load_dotenv()
 
@@ -45,41 +48,107 @@ admin_bp = Blueprint("admin", __name__)
 @user_bp.route("/user/create", methods=["POST"])
 def user_create():
     if request.is_json:
-        data = request.get_json()
-        username = data.get("username")
-        password = data.get("password")
-        first_name = data.get("first_name")
-        last_name = data.get("last_name")
-        email = data.get("email")
-        phone_number = data.get("phone_number")
+        try:
+            data = request.get_json()
+            username = data["username"]
+            password = data["password"]
+            confirm = data["confirm_password"]
+            first_name = data["first_name"]
+            last_name = data["last_name"]
+            email = data["email"]
+            phone_number = data["phone_number"]
+        except KeyError:
+            return jsonify_error(
+                msg="Invalid Form Data Provided.",
+                err="Invalid Data",
+                status=400,
+            )
 
-        to_print = f"Received data: Username: {username}, Password: {password}, First Name: {first_name}, Last Name: {last_name}, Email: {email}, Phone Number: {phone_number}"
-        print(to_print)
+        if confirm != password:
+            return jsonify_error(
+                msg="Confirm password must match password.",
+                err="Password Confirmation Mismatch",
+                status=400,
+            )
 
-        return jsonify(
-            {"message": "User account created successfully", "msg": to_print}
-        )
+        hashed_password, salt = hash_salt(password)
+        collision = UserInformation.query.filter(
+            or_(
+                UserInformation.useremail == email,
+                UserInformation.username == username,
+            )
+        ).first()
+
+        if collision:
+            email_collision = collision.useremail == email
+            return jsonify_error(
+                msg=f"A user with the same {'email' if email_collision else 'username'} already exists.",
+                err=f"{'User Email' if email_collision else 'Username'} Conflict",
+                status=400,
+            )
+
+        new_user = UserInformation()
+        new_user.username = username
+        new_user.password = hashed_password
+        new_user.password_salt = salt
+        new_user.user_fname = first_name
+        new_user.user_lname = last_name
+        new_user.useremail = email
+        new_user.user_phone = phone_number
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        # Redirect the user to the login screen.
+        return redirect(request.url_root + "Login")
 
     else:
-        return jsonify({"error": "Invalid JSON"})
+        return jsonify_error(
+            msg="Request must have mime type application/json",
+            err="Invalid Mime Type",
+            status=400,
+        )
 
 
 # User Login Route
 @user_bp.route("/user/login", methods=["POST"])
 def user_login():
-    res = None
-    if request.is_json:
-        request_data = request.get_json()
-        res = jsonify(
-            {"message": "User successfully logged in.", "data": str(request_data)}
+    if not request.is_json:
+        return jsonify_error(
+            msg="Request must have mime type application/json",
+            err="Invalid Mime Type",
+            status=400,
         )
-        res.status_code = 200
 
-    else:
-        res = jsonify({"message": "Error in request object."})
-        res.status_code = 200
+    try:
+        login_data = request.get_json()
+        email = login_data["email"]
+        password = login_data["password"]
+    except KeyError:
+        return jsonify_error(
+            msg="Request must have mime type application/json",
+            err="Invalid Mime Type",
+            status=400,
+        )
 
-    return res
+    user = UserInformation.query.filter_by(useremail=email).first()
+    userdict = user.__dict__
+
+    if not (user and verify_hash(password, user.password, user.password_salt)):
+        return jsonify_error(
+            msg="User does not exist.",
+            err="Invalid User.",
+            status=400,
+        )
+
+    return_object = {
+        key: userdict[key] for key in ["userid", "user_phone", "username", "useremail"]
+    }
+
+    # Return a jwt as a response.
+    return jsonify(
+        {"token": jwt.encode(return_object, os.getenv("JWT_KEY") or "password")}
+    )
 
 
 # Admin Create Route
@@ -101,14 +170,6 @@ def admin_create():
         )
     else:
         return jsonify({"error": "Invalid JSON"}), 400
-
-
-@app.route("/test/db")
-def test_db_connection():
-    try:
-        return jsonify({"message": "DB connected"})
-    except Exception as e:
-        return jsonify({"error": "failed", "details": str(e)}), 500
 
 
 @app.route("/")

@@ -47,11 +47,13 @@ class UserInformation(db.Model):
     __tablename__ = "user_information"
 
     userid = db.Column(db.Integer, primary_key=True)
-    userfullname = db.Column(db.String(100), nullable=False)
+    user_fname = db.Column(db.String(100), nullable=False)
+    user_lname = db.Column(db.String(100), nullable=False)
     useremail = db.Column(db.String(100), unique=True, nullable=False)
     username = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
     password_salt = db.Column(db.String(100), nullable=False)
+    user_phone = db.Column(db.String(12), nullable=False)
     # userprofilepic = db.Column(db.String(100), nullable=True)
 
 
