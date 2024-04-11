@@ -7,7 +7,7 @@ import { useState } from "react";
  *
  * @param {URL} url - Url to the site that the form will be sent to.
  *
- * @returns {[React.ChangeEventHandler<HTMLInputElement>, React.FormEventHandler<HTMLFormElement>, {}]} - A function to set the form data to be attached as an event listener
+ * @returns {[React.ChangeEventHandler<HTMLInputElement>, import("@lib/types").SubmissionCallback, {}]} - A function to set the form data to be attached as an event listener
  *
  * @example
  * export default function FormComponentExample() {
@@ -39,8 +39,12 @@ export function useFormState(url) {
   };
 
   /**
-   * @param {React.FormEvent<HTMLFormElement>} event
-   * @param {(res: Response) => void} [callback]
+   * Function: submit
+   *
+   * @description A function to be called when the form is submitted.
+   *
+   * @param {React.FormEvent<HTMLFormElement>} event - Event to respond to
+   * @param {(res: Response | undefined) => void} [callback] - Callback to execute with the response from the backend.
    *
    * @returns {Promise<void>}
    * */
