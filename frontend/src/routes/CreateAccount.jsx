@@ -1,7 +1,10 @@
 import { useFormState } from "@hooks/formHooks";
+import { useState } from "react";
+import { redirect } from "react-router-dom";
 import "@style/Admin.css";
 
 const BACKEND_URL = "http://localhost:5000";
+const websiteLink = window.location.protocol + "//" + window.location.host;
 
 /**
  * Route: Create Account Page
@@ -13,9 +16,31 @@ const BACKEND_URL = "http://localhost:5000";
  * @returns {React.ReactElement} Component to be rendered at the Create account page route.
  */
 export default function Example() {
+  const [feedbackMessage, setFeedbackMessage] = useState("");
   const [setFormData, onFormSubmit] = useFormState(
     new URL(BACKEND_URL + "/user/create"),
   );
+
+  /** @param {Response | undefined} res */
+  function handleServerResponse(res) {
+    if (!res) {
+      console.error("Server response is undefined.");
+      return;
+    }
+
+    res.json().then((decoded) => {
+      if (decoded.status != 200) {
+        /** @type {import("@lib/types").BackendError} */
+        const err = decoded;
+        setFeedbackMessage(err.message);
+      } else {
+        /** @type {import("@lib/types").JWTResponse} */
+        const valid = decoded;
+        document.cookie = `access_token=${valid.token}`;
+        redirect(BACKEND_URL + "/authenticate");
+      }
+    });
+  }
 
   return (
     <>
@@ -26,9 +51,15 @@ export default function Example() {
               Sign in
             </h2>
           </div>
+          <h1 className="text-red-800 mx-auto text-sm mt-4">
+            {feedbackMessage}
+          </h1>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" onSubmit={onFormSubmit}>
+            <form
+              className="space-y-6"
+              onSubmit={(event) => onFormSubmit(event, handleServerResponse)}
+            >
               <div>
                 <label
                   htmlFor="username"

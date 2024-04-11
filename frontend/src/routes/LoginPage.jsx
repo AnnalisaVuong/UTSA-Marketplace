@@ -1,4 +1,5 @@
 import { useFormState } from "@hooks/formHooks";
+import { useState } from "react";
 
 const BACKEND_URL = "http://localhost:5000";
 
@@ -12,9 +13,31 @@ const BACKEND_URL = "http://localhost:5000";
  * @returns {React.ReactElement} Component to be rendered at the login page route.
  */
 export default function Example() {
+  const [formMessage, setFormMessage] = useState("");
   const [setFormData, handleSubmit] = useFormState(
     new URL(BACKEND_URL + "/user/login"),
   );
+
+  /** @param {Response | undefined} res */
+  function handleServerResponse(res) {
+    if (!res) {
+      console.error("ERROR: Server response is undefined.");
+      return;
+    }
+
+    res
+      .json()
+      .then((obj) => {
+        if (res.status == 200) {
+          document.cookie = `auth_token=${obj.token}`;
+        } else {
+          setFormMessage(obj.message);
+        }
+      })
+      .catch(() => {
+        setFormMessage("Error decoding error response from server.");
+      });
+  }
 
   return (
     <>
@@ -27,21 +50,26 @@ export default function Example() {
           </div>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" onSubmit={handleSubmit}>
+            <form
+              className="space-y-6"
+              onSubmit={async (event) => {
+                handleSubmit(event, handleServerResponse);
+              }}
+            >
               <div>
                 <label
-                  htmlFor="username"
+                  htmlFor="email"
                   className="block text-sm font-medium leading-6 text-gray-50"
                 >
-                  Username
+                  Email
                 </label>
                 <div className="mt-2">
                   <input
                     onChange={setFormData}
-                    id="username"
-                    name="username"
-                    type="username"
-                    autoComplete="username"
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
@@ -80,7 +108,10 @@ export default function Example() {
               </div>
             </form>
 
-            <p className="mt-10 text-center text-sm text-gray-500">
+            <p className="block text-center text-sm text-red-500">
+              {formMessage}
+            </p>
+            <p className="text-center text-sm text-gray-500">
               Not a member?{" "}
               <a
                 href="/CreateAccount"

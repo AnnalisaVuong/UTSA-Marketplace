@@ -39,8 +39,12 @@ export function useFormState(url) {
   };
 
   /**
-   * @param {React.FormEvent<HTMLFormElement>} event
-   * @param {(res: Response | undefined) => void} [callback]
+   * Function: submit
+   *
+   * @description A function to be called when the form is submitted.
+   *
+   * @param {React.FormEvent<HTMLFormElement>} event - Event to respond to
+   * @param {(res: Response | undefined) => void} [callback] - Callback to execute with the response from the backend.
    *
    * @returns {Promise<void>}
    * */

@@ -1,7 +1,8 @@
 import os
+import json
 from hashpass import hash_salt, verify_hash
-from flask import Flask, Blueprint, Response, request, jsonify, redirect
-from sqlalchemy import or_
+from flask import Flask, Blueprint, request, jsonify, redirect, session
+from sqlalchemy import or_, func
 from flask_cors import CORS
 from dotenv import load_dotenv
 from api_utils import jsonify_error
@@ -42,6 +43,8 @@ db.init_app(app)
 
 user_bp = Blueprint("user", __name__)
 admin_bp = Blueprint("admin", __name__)
+
+jwt_password = os.getenv("JWT_KEY") or "password"
 
 
 # User Create Route
@@ -99,8 +102,7 @@ def user_create():
         db.session.add(new_user)
         db.session.commit()
 
-        # Redirect the user to the login screen.
-        return redirect(request.url_root + "Login")
+        return jsonify({"message": "User successfully created."})
 
     else:
         return jsonify_error(
@@ -122,7 +124,7 @@ def user_login():
 
     try:
         login_data = request.get_json()
-        username = login_data["username"]
+        email = login_data["email"]
         password = login_data["password"]
     except KeyError:
         return jsonify_error(
@@ -131,7 +133,7 @@ def user_login():
             status=400,
         )
 
-    user = UserInformation.query.filter_by(username=username).first()
+    user = UserInformation.query.filter_by(useremail=email).first()
 
     if not (user and verify_hash(password, user.password, user.password_salt)):
         return jsonify_error(
@@ -141,14 +143,14 @@ def user_login():
         )
 
     userdict = user.__dict__
-    return_object = {
-        key: userdict[key] for key in ["userid", "user_phone", "username", "useremail"]
-    }
+    return_object = {key: userdict[key] for key in ["userid", "username", "useremail"]}
+
+    encoded_jwt = jwt.encode(return_object, os.getenv("JWT_KEY") or "password")
+
+    session["user_token"] = encoded_jwt
 
     # Return a jwt as a response.
-    return jsonify(
-        {"token": jwt.encode(return_object, os.getenv("JWT_KEY") or "password")}
-    )
+    return jsonify({"token": encoded_jwt})
 
 
 # Admin Create Route
