@@ -58,6 +58,7 @@ return (
         <form 
         className="w-full max-w-md"
         onSubmit={submitData}>
+          {/* div for username */}
             <div className="flex flex-row items-center">
                 <label htmlFor="username" className="basis-1/4">
                     Username: 
@@ -73,6 +74,7 @@ return (
                 placeholder="Enter a User Name"/>
                 <br/>
             </div>
+            {/* div for password */}
             <div className="flex flex-row items-center">
                 <label htmlFor="password" className="basis-1/4">
                     Password: 
@@ -88,6 +90,7 @@ return (
                 placeholder="Enter a Password"/>
                 <br/>
             </div>
+            {/* div for confirm password */}
             <div className="flex flex-row items-center">
                 <label htmlFor="confirm-password" className="basis-1/4">
                     Confirm Password: 
@@ -103,6 +106,7 @@ return (
                 placeholder="Confirm Password"/>
                 <br/>
             </div>
+            {/* div for first name */}
             <div className="flex flex-row items-center">
                 <label htmlFor="first-name" className="basis-1/4">
                     First Name: 
@@ -118,6 +122,7 @@ return (
                 placeholder="First Name"/>
                 <br/>
             </div>
+            {/* div for last name */}
             <div className="flex flex-row items-center">
                 <label htmlFor="last-name" className="basis-1/4">
                     Last Name: 
@@ -133,6 +138,7 @@ return (
                 placeholder="Last Name"/>
                 <br/>
             </div>
+            {/* div for email */}
             <div className="flex flex-row items-center">
                 <label htmlFor="email" className="basis-1/4">
                     Email: 
@@ -148,6 +154,7 @@ return (
                 placeholder="example@domain.com"/>
                 <br/>
             </div>
+            {/* div for phone number */}
             <div className="flex flex-row items-center">
                 <label htmlFor="phoneNumber" className="basis-1/4">
                     Phone Num: 
@@ -170,6 +177,7 @@ return (
                 />
                 <br/>
             </div>
+            {/* Submit and Reset Div */}
             <div className="flex flex-row gap-4 mt-10">
                 <input type="submit" value="Create" className="bg-white hover:bg-orange-300 text-[#ab6809] font-bold py-3 px-4 rounded basis-2/4
                 focus:outline-none focus:ring focus:ring-orange-200 rounded"/>

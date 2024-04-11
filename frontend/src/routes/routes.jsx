@@ -22,7 +22,3 @@ export const CreateAccountRoute = {
   path: "/CreateAccount",
   element: <CreateAccount />,
 };
-export const CreatePostRoute = {
-  path: "/CreatePost",
-  element: <CreatePost />
-}
