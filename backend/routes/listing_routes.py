@@ -1,16 +1,15 @@
 from flask import jsonify, Blueprint, redirect, request, session, url_for
-from api_utils import jsonify_error
+from api_utils import jsonify_error, jwt_password
 from models import ItemListing, db
 from sqlalchemy import func
-import os
 import jwt
 
-user_posts = Blueprint("user_posts", __name__)
+bp = Blueprint("listing", __name__, url_prefix="/listing")
+validate_user = False
 
-jwt_password = os.getenv("JWT_KEY") or "password"
 
-
-def user_authenticate() -> tuple[bool, dict | None]:
+# These routes will be protected by this authentication function.
+def authenticate() -> tuple[bool, dict | None]:
     if "user_token" not in session:
         return False, None
 
@@ -22,14 +21,14 @@ def user_authenticate() -> tuple[bool, dict | None]:
     return True, data
 
 
-@user_posts.before_request
-def before_request():
-    if not user_authenticate():
+@bp.before_request
+def before():
+    if validate_user and not authenticate():
         redirect(url_for("user_bp.user_login"))
 
 
-@user_posts.route("/posts/create", methods=["POST"])
-def create_post():
+@bp.route("/create", methods=["POST"])
+def create():
     if not request.is_json:
         return jsonify_error(
             msg="The mime type of the request is not application/json",
@@ -58,9 +57,8 @@ def create_post():
     return jsonify({"message": "Post created successfully."})
 
 
-@user_posts.get("/posts/listings")
-def retrieve_posts():
-
+@bp.get("/retrieve")
+def retrieve():
     posts_current_user = (
         ItemListing.query.filter_by(userid=id).order_by(func.random()).limit(10)
     )

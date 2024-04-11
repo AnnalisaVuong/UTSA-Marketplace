@@ -1,5 +1,9 @@
 from datetime import datetime
 from flask import jsonify
+import os
+
+# Use this for decoding and encoding jwts
+jwt_password = os.getenv("JWT_KEY") or "password"
 
 
 def jsonify_error(err, msg, status):
