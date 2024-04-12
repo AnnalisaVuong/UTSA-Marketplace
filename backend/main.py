@@ -27,7 +27,7 @@ CORS(app)  # Enable CORS
 # Create the configuration string for the database.
 def create_config_string():
     database_user = os.getenv("DB_USERNAME") or "administrator"
-    database_password = os.getenv("DB_PASSWORD") or "default_password"
+    database_password = os.getenv("DB_PASSWORD") or "password"
     database_name = os.getenv("DB_NAME") or "utsa_marketplace"
     return f"postgresql://{database_user}:{database_password}@db:5432/{database_name}"
 
