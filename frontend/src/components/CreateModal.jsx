@@ -7,18 +7,21 @@ import { useFormState } from "@hooks/formHooks";
 const BACKEND_URL = "http://localhost:5000";
 
 /**
- * Component BasicModal
+ * Component BasicModal:
+ *
  * @param {Object} props
  * @param {boolean} props.shown
+ * @param {() => void} props.onClose
+ *
  */
-export default function BasicModal({ shown }) {
+export default function BasicModal({ shown, onClose }) {
   const [setFormData, submitForm, formData] = useFormState(
     new URL(BACKEND_URL + "/listings/create"),
   );
 
   return (
     <div>
-      <Modal open={shown}>
+      <Modal open={shown} onClose={onClose}>
         <div className="rounded w-400 bg-white absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center space-between">
           <h1 className="text-4xl font-medium tracking-tight md:text-5xl lg:text-6xl mb-10">
             Create a Post
@@ -90,4 +93,3 @@ export default function BasicModal({ shown }) {
     </div>
   );
 }
-

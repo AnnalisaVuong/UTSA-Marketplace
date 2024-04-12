@@ -66,7 +66,10 @@ export default function Header() {
 
   return (
     <>
-      <CreateModal shown={modalShown}></CreateModal>
+      <CreateModal
+        shown={modalShown}
+        onClose={() => setModalShown(false)}
+      ></CreateModal>
       <header
         className="[&>*]:font-roboto flex justify-between px-[8vw] py-4 items-center h-2/6"
         style={headerStyles[theme]}
