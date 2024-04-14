@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { useFormState } from "@hooks/formHooks";
+import CurrencyInput from 'react-currency-input-field';
 const BACKEND_URL = "http://localhost:5000";
 
 /**
@@ -22,8 +23,9 @@ export default function BasicModal({ shown, onClose }) {
   return (
     <div>
       <Modal open={shown} onClose={onClose}>
-        <div className="rounded w-400 bg-white absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center space-between">
-          <h1 className="text-4xl font-medium tracking-tight md:text-5xl lg:text-6xl mb-10">
+        <div className="p-5 rounded w-400 bg-white absolute left-1/2 top-1/2 transform 
+                        -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center space-between">
+          <h1 className="font-mono text-cyan-700 text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl mb-10">
             Create a Post
           </h1>
           <form
@@ -31,20 +33,22 @@ export default function BasicModal({ shown, onClose }) {
             onSubmit={() => console.log(formData)}
           >
             {/* Image submission div */}
-            <div className="flex flex-col items-center">
-              <label className="basis-1/4">Upload image: </label>
+            <div className="flex flex-col">
+              <label className="text-orange-400">Upload image: </label>
               <input
-                className="basis-3/4"
+                required
+                className="font-medium"
                 type="file"
                 accept="image/*"
                 onChange={setFormData}
               />
             </div>
             {/* Name submission div */}
-            <div className="flex flex-col items-center">
-              <label className="basis-2/4">Name of product: </label>
+            <div className="flex flex-col">
+              <label className="text-orange-400">Name of product: </label>
               <input
-                className="basis-2/4"
+                required
+                className="font-medium"
                 type="text"
                 id="name"
                 name="name"
@@ -54,38 +58,42 @@ export default function BasicModal({ shown, onClose }) {
               />
             </div>
             {/* Description div */}
-            <div>
+            <div className="flex flex-col">
+              <label className="text-orange-400">Description: </label>
               <textarea
+                required
+                className="font-medium"
                 name="description"
                 id="description"
                 value={formData.description}
                 onChange={setFormData}
-                placeholder="Description"
-              />
-            </div>
-            {/* Tags div */}
-            <div>
-              <input
-                type="text"
-                name="tags"
-                value={formData.tags}
-                onChange={setFormData}
-                placeholder="Tags"
+                placeholder="Short description of product"
               />
             </div>
             {/* Price div */}
-            <div>
-              <input
-                type="number"
+            <div className="flex flex-col">
+              
+              <label className="text-orange-400">Price in USD:</label>
+              <CurrencyInput
+                required
+                className="font-medium"
+                prefix="$"
+                id="price"
                 name="price"
+                placeholder="$1234.56"
+                decimalsLimit={2}
                 value={formData.price}
-                onChange={setFormData}
-                placeholder="Price"
+                //onChange
+                onValueChange={(value, name, values) => console.log(value, name, values)}
               />
             </div>
             {/* Submit button div */}
-            <div className="flex flex-row items-center">
-              <Button type="submit">Submit</Button>
+            <div className="flex flex-row items-center justify-center">
+              <Button 
+              className="font-extrabold text-cyan-700 text-xl hover:bg-orange-300"
+              type="submit">
+                Submit
+              </Button>
             </div>
           </form>
         </div>
