@@ -9,26 +9,20 @@ services:
       POSTGRES_USER: administrator
       POSTGRES_DB: utsa_marketplace
   backend:
-    volumes:
-      - ./backend:/app
     ports:
       - "5000:5000"
     depends_on:
       - db
     build:
       context: backend
-      target: dev-backend
     restart: always
   frontend:
-    volumes:
-      - ./frontend:/app
     ports:
       - "5173:5173"
     depends_on:
       - backend
     build:
       context: frontend
-      target: dev-frontend
 secrets:
   db_root_password:
     file: db_password.txt

@@ -1,15 +1,11 @@
-FROM node AS dev-frontend
+FROM node
 
 WORKDIR /app
 
-VOLUME ["/app"]
+COPY ./package.json /app
 
-CMD ["npm", "run", "dev"]
-
-FROM node AS prod-frontend
-
-COPY package.json .
 RUN npm install
-COPY . .
+
+COPY . /app
 
 CMD ["npm", "run", "dev"]
