@@ -33,7 +33,7 @@ export default function Admin() {
 
     const [phoneNumber, setPhoneNumber] = useState('');
 
-  const handleChange = (event) => {
+  const handleChange = (/** @type {import("react").ChangeEvent<HTMLInputElement>} */ event) => {
     const input = event.target.value.replace(/\D/g, '').substring(0, 10); // Remove non-numeric characters and limit to 10 digits
     const areaCode = input.substring(0, 3);
     const middle = input.substring(3, 6);
