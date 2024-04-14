@@ -1,10 +1,9 @@
 import { useFormState } from "@hooks/formHooks";
 import { useState } from "react";
-import { redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "@style/Admin.css";
 
 const BACKEND_URL = "http://localhost:5000";
-const websiteLink = window.location.protocol + "//" + window.location.host;
 
 /**
  * Route: Create Account Page
@@ -16,6 +15,7 @@ const websiteLink = window.location.protocol + "//" + window.location.host;
  * @returns {React.ReactElement} Component to be rendered at the Create account page route.
  */
 export default function Example() {
+  const navigate = useNavigate();
   const [feedbackMessage, setFeedbackMessage] = useState("");
   const [setFormData, onFormSubmit] = useFormState(
     new URL(BACKEND_URL + "/user/create"),
@@ -29,15 +29,10 @@ export default function Example() {
     }
 
     res.json().then((decoded) => {
-      if (decoded.status != 200) {
-        /** @type {import("@lib/types").BackendError} */
-        const err = decoded;
-        setFeedbackMessage(err.message);
-      } else {
-        /** @type {import("@lib/types").JWTResponse} */
-        const valid = decoded;
-        document.cookie = `access_token=${valid.token}`;
-        redirect(BACKEND_URL + "/authenticate");
+      if (res.status != 200) setFeedbackMessage(decoded.message);
+      else {
+        setFeedbackMessage("User successfully created, navigating to login...");
+        setTimeout(() => navigate("/login"), 1500);
       }
     });
   }
@@ -51,9 +46,6 @@ export default function Example() {
               Sign in
             </h2>
           </div>
-          <h1 className="text-red-800 mx-auto text-sm mt-4">
-            {feedbackMessage}
-          </h1>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
             <form
@@ -213,7 +205,11 @@ export default function Example() {
               </div>
             </form>
 
-            <p className="mt-10 text-center text-sm text-gray-500">
+            <p className="text-red-800 text-center mx-auto text-sm mt-4">
+              {feedbackMessage}
+            </p>
+
+            <p className="mt-4 text-center text-sm text-gray-500">
               Already a member?{" "}
               <a
                 href="/Login"

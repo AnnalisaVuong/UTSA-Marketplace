@@ -1,5 +1,6 @@
 import { useFormState } from "@hooks/formHooks";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const BACKEND_URL = "http://localhost:5000";
 
@@ -13,12 +14,20 @@ const BACKEND_URL = "http://localhost:5000";
  * @returns {React.ReactElement} Component to be rendered at the login page route.
  */
 export default function Example() {
+  const navigate = useNavigate();
   const [formMessage, setFormMessage] = useState("");
   const [setFormData, handleSubmit] = useFormState(
     new URL(BACKEND_URL + "/user/login"),
   );
 
-  /** @param {Response | undefined} res */
+  /**
+   * Function: handleServerResponse
+   *
+   * @description Handles the json response from the server
+   * asynchronously
+   *
+   * @param {Response | undefined} res
+   */
   function handleServerResponse(res) {
     if (!res) {
       console.error("ERROR: Server response is undefined.");
@@ -29,13 +38,16 @@ export default function Example() {
       .json()
       .then((obj) => {
         if (res.status == 200) {
-          document.cookie = `auth_token=${obj.token}`;
+          document.cookie = `auth_token=${obj.token}; SameSite=None; secure`;
+          setFormMessage("Login success, navigating to posts...");
+          setTimeout(() => navigate("/posts/view"), 1500);
         } else {
           setFormMessage(obj.message);
         }
       })
       .catch(() => {
-        setFormMessage("Error decoding error response from server.");
+        setFormMessage("An error occurred while processing the request.");
+        console.error("Error: Unable to decode server response object");
       });
   }
 
@@ -52,7 +64,7 @@ export default function Example() {
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
             <form
               className="space-y-6"
-              onSubmit={async (event) => {
+              onSubmit={(event) => {
                 handleSubmit(event, handleServerResponse);
               }}
             >
