@@ -26,6 +26,7 @@ git clone https://github.com/AnnalisaVuong/UTSA-Marketplace.git
 ```
 cd <project-directory>/backend
 pip install -r requirements.txt
+make sure main.py is the current file and then execute main.py
 ```
 
 ### 3. Navigate to the frontend Directory and Install Dependencies
