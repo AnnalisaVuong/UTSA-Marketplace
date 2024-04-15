@@ -11,7 +11,7 @@ def create_config_string():
     database_user = os.getenv("DB_USERNAME") or "administrator"
     database_password = os.getenv("DB_PASSWORD") or "password"
     database_name = os.getenv("DB_NAME") or "utsa_marketplace"
-    return f"postgresql://{database_user}:{database_password}@db:5432/{database_name}"
+    return f"postgresql://administrator:password@158.101.13.69:5432/utsa_marketplace"
 #sprint3
 
 # Factory function to create the app.
@@ -45,6 +45,5 @@ if __name__ == "__main__":
 
     app.run(
         debug=True,
-        host="0.0.0.0",
         port=5000,
     )
