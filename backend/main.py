@@ -12,7 +12,7 @@ def create_config_string():
     database_password = os.getenv("DB_PASSWORD") or "password"
     database_name = os.getenv("DB_NAME") or "utsa_marketplace"
     return f"postgresql://{database_user}:{database_password}@db:5432/{database_name}"
-
+#sprint3
 
 # Factory function to create the app.
 def create_app():
