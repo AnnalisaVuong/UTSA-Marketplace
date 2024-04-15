@@ -107,7 +107,7 @@ def login():
     userdict = user.__dict__
     return_object = {key: userdict[key] for key in ["userid", "username", "useremail"]}
 
-    encoded_jwt = jwt.encode(return_object, jwt_password)
+    encoded_jwt = jwt.encode(return_object, jwt_password, "HS256")
 
     # Set the user's session to the jwt
     session["user_token"] = encoded_jwt
