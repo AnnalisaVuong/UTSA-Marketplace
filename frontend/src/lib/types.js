@@ -22,6 +22,16 @@
  * @property {string} token
  */
 
+/**
+ * @typedef UserPost
+ *
+ * @property {boolean} available
+ * @property {string} data
+ * @property {string} desc
+ * @property {number} price
+ * @property {string} title
+ */
+
 /** @typedef {BackendResponseJWT & Response} JWTResponse */
 
 /** @typedef {(BackendResponseError | BackendResponseJWT) & Response} BackendResponseOption */

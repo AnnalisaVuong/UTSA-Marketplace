@@ -37,10 +37,10 @@ export default function Example() {
     res
       .json()
       .then((obj) => {
+        const { token } = obj;
         if (res.status == 200) {
-          document.cookie = `auth_token=${obj.token}; SameSite=None; secure`;
           setFormMessage("Login success, navigating to posts...");
-          setTimeout(() => navigate("/posts/view"), 1500);
+          setTimeout(() => navigate(`/posts/view/${token}`), 1500);
         } else {
           setFormMessage(obj.message);
         }
