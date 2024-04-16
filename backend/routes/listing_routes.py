@@ -31,10 +31,11 @@ def before():
 
 @bp.route("/create", methods=["POST"])
 def create():
-    if not (user_data := getattr(g, "user_data", None)):
+    user_data = getattr(g, "user_data", None)
+    if not user_data or not (user_id := user_data["userid"]):
         return jsonify_error(
-            msg="User data not found.",
-            err="No user data",
+            err="User ID Not found.",
+            msg="User ID was not found in the request token.",
             status=401,
         )
 
@@ -53,7 +54,7 @@ def create():
         new_listing.itemprice = post_creation_data["price"]
         new_listing.itemavailability = post_creation_data["available"]
         new_listing.itemposteddate = post_creation_data["date"]
-        new_listing.userid = user_data["userid"]
+        new_listing.userid = user_id
         db.session.add(new_listing)
         db.session.commit()
     except KeyError:
@@ -69,34 +70,25 @@ def create():
             status=400,
         )
 
-    return jsonify({"message": user_data})
+    return jsonify({"message": "Post successfully created."})
 
 
-@bp.get("/retrieve/listings/<string:target>")
+@bp.get("/retrieve/<string:target>")
 def retrieve(target: str):
-    if not (request.authorization and (token_client := request.authorization.token)):
+    user_data = getattr(g, "user_data", None)
+    if not user_data or not (user_id := user_data["userid"]):
         return jsonify_error(
-            err="Not Authorized",
-            msg="Client does not have access to this resource.",
-            status=401,
-        )
-
-    try:
-        jwt_data = jwt.decode(token_client, jwt_password)
-        id = jwt_data["userid"]
-    except:
-        return jsonify_error(
-            err="JWT Parsing Error",
-            msg="An error occurred while parsing the jwt object.",
+            err="User ID Not found.",
+            msg="User ID was not found in the request token.",
             status=401,
         )
 
     if target == "self":
-        items = ItemListing.query.filter(ItemListing.userid == id)
+        items = ItemListing.query.filter(ItemListing.userid == user_id)
     elif target.isdigit():
         items = ItemListing.query.filter(ItemListing.userid == int(target))
     else:
-        items = ItemListing.query.filter(ItemListing.userid != id)
+        items = ItemListing.query.filter(ItemListing.userid != user_id)
 
     if items.first():
         post_list = items.order_by(func.random()).limit(10)
@@ -108,12 +100,15 @@ def retrieve(target: str):
         )
 
     listings_toreturn = {
-        post.userid: {
-            "title": post.itemtitle,
-            "desc": post.itemdescription,
-            "price": post.itemprice,
-            "available": post.itemavailability,
-            "data": post.itemposteddate,
+        post.item_id: {
+            "user_id": post.userid,
+            "data": {
+                "title": post.itemtitle,
+                "desc": post.itemdescription,
+                "price": post.itemprice,
+                "available": post.itemavailability,
+                "data": post.itemposteddate,
+            },
         }
         for post in post_list
     }
