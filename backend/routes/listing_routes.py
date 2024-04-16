@@ -107,7 +107,7 @@ def retrieve(target: str):
                 "desc": post.itemdescription,
                 "price": post.itemprice,
                 "available": post.itemavailability,
-                "data": post.itemposteddate,
+                "date": post.itemposteddate,
             },
         }
         for post in post_list
