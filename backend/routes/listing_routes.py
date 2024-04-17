@@ -5,38 +5,43 @@ from sqlalchemy import func
 import jwt
 
 
-bp = Blueprint("listing", __name__, url_prefix="/listing")
+bp_protected = Blueprint("listings_closed", __name__, url_prefix="/listing")
+bp_open = Blueprint("listings_open", __name__, url_prefix="/listing")
+
+# Set this to use session jwt validation.
+validate_session = False
 
 
-@bp.before_request
+@bp_protected.before_request
 def before():
     invalid_response = jsonify_error(
         err="Not Authorized",
-        msg="User does not have permission to access this resource",
+        msg="User does not have access to this resource.",
         status=401,
     )
 
-    header = request.headers.get("Authorization")
+    token = request.cookies.get("user_data")
 
-    if not header or not header.startswith("Bearer "):
+    print(token)
+
+    if not token:
         return invalid_response
 
     try:
-        token = header.split(" ")[1]
         decoded = jwt.decode(token, jwt_password, ["HS256"])
         setattr(g, "user_data", decoded)
     except:
         return invalid_response
 
 
-@bp.route("/create", methods=["POST"])
+@bp_protected.route("/create", methods=["POST"])
 def create():
     user_data = getattr(g, "user_data", None)
     if not user_data or not (user_id := user_data["userid"]):
         return jsonify_error(
-            err="User ID Not found.",
-            msg="User ID was not found in the request token.",
-            status=401,
+            err="Internal Server Error.",
+            msg="Session Mismatch Occurred.",
+            status=500,
         )
 
     if not request.is_json:
@@ -73,7 +78,7 @@ def create():
     return jsonify({"message": "Post successfully created."})
 
 
-@bp.get("/retrieve/<string:target>")
+@bp_protected.get("/retrieve/<string:target>")
 def retrieve(target: str):
     user_data = getattr(g, "user_data", None)
     if not user_data or not (user_id := user_data["userid"]):
@@ -114,3 +119,28 @@ def retrieve(target: str):
     }
 
     return jsonify(listings_toreturn)
+
+
+@bp_open.get("/all")
+def collection():
+    posts = ItemListing.query.all()
+    if len(posts) == 0:
+        return jsonify_error(
+            err="No Resource Exists.",
+            msg="No listings currently exist.",
+            status=404,
+        )
+
+    return jsonify(
+        {
+            post.item_id: {
+                "title": post.itemtitle,
+                "desc": post.itemdescription,
+                "price": post.itemprice,
+                "available": post.itemavailability,
+                "date": post.itemposteddate,
+                "userid": post.userid,
+            }
+            for post in posts
+        }
+    )

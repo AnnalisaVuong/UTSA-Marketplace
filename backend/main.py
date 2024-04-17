@@ -30,7 +30,8 @@ def create_app():
     # Register Blueprints
     app.register_blueprint(admin_routes.bp)
     app.register_blueprint(user_routes.bp)
-    app.register_blueprint(listing_routes.bp)
+    app.register_blueprint(listing_routes.bp_open)
+    app.register_blueprint(listing_routes.bp_protected)
 
     return app
 
