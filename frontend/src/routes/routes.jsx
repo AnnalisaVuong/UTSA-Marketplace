@@ -2,6 +2,7 @@ import LandingPage from "./LandingPage";
 import LoginPage from "./LoginPage";
 import CreateAccount from "./CreateAccount";
 import CreatePost from "./CreatePost";
+import PostView from "./PostView.jsx"
 
 
 /**
@@ -21,4 +22,8 @@ export const LoginPageRoute = {
 export const CreateAccountRoute = {
   path: "/CreateAccount",
   element: <CreateAccount />,
+};
+export const PostRoute = {
+  path: "/posts/view",
+  element: <PostView />,
 };

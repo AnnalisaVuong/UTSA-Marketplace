@@ -5,6 +5,7 @@ import { LandingPageRoute } from "@routes/routes";
 import { LoginPageRoute } from "@routes/routes";
 import { CreateAccountRoute } from "@routes/routes";
 import Admin from "@routes/AdminCreation";
+import {PostRoute} from "@routes/routes";``
 
 // Add new routes here.
 const router = createBrowserRouter([
@@ -15,6 +16,7 @@ const router = createBrowserRouter([
   },
   LoginPageRoute,
   CreateAccountRoute,
+    PostRoute
 ]);
 
 // Select root element for rendering ReactDOM tree.
