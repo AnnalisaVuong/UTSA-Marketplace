@@ -25,7 +25,7 @@ export default function BasicModal({ shown, onClose }) {
       <Modal open={shown} onClose={onClose}>
         <div className="p-5 rounded w-400 bg-white absolute left-1/2 top-1/2 transform 
                         -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center space-between">
-          <h1 className="font-mono text-cyan-700 text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl mb-10">
+          <h1 className="font-mono text-[#0c2340] text-4xl font-bold tracking-tight md:text-5xl lg:text-6xl mb-10">
             Create a Post
           </h1>
           <form
@@ -34,7 +34,7 @@ export default function BasicModal({ shown, onClose }) {
           >
             {/* Image submission div */}
             <div className="flex flex-col">
-              <label className="text-orange-400">Upload image: </label>
+              <label className="text-[#f15a22] text-lg">Upload image: </label>
               <input
                 required
                 className="font-medium"
@@ -45,7 +45,7 @@ export default function BasicModal({ shown, onClose }) {
             </div>
             {/* Name submission div */}
             <div className="flex flex-col">
-              <label className="text-orange-400">Name of product: </label>
+              <label className="text-[#f15a22] text-lg">Name of product: </label>
               <input
                 required
                 className="font-medium"
@@ -59,7 +59,7 @@ export default function BasicModal({ shown, onClose }) {
             </div>
             {/* Description div */}
             <div className="flex flex-col">
-              <label className="text-orange-400">Description: </label>
+              <label className="text-[#f15a22] text-lg">Description: </label>
               <textarea
                 required
                 className="font-medium"
@@ -73,7 +73,7 @@ export default function BasicModal({ shown, onClose }) {
             {/* Price div */}
             <div className="flex flex-col">
               
-              <label className="text-orange-400">Price in USD:</label>
+              <label className="text-[#f15a22] text-lg">Price in USD:</label>
               <CurrencyInput
                 required
                 className="font-medium"
@@ -90,7 +90,7 @@ export default function BasicModal({ shown, onClose }) {
             {/* Submit button div */}
             <div className="flex flex-row items-center justify-center">
               <Button 
-              className="font-extrabold text-cyan-700 text-xl hover:bg-orange-300"
+              className="font-bold text-[#0c2340] text-xl hover:bg-[#f15a22]"
               type="submit">
                 Submit
               </Button>

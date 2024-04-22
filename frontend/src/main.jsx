@@ -6,6 +6,7 @@ import { LoginPageRoute } from "@routes/routes";
 import { CreateAccountRoute } from "@routes/routes";
 import Admin from "@routes/AdminCreation";
 import {PostRoute} from "@routes/routes";``
+import Cart from "@routes/Cart";
 
 // Add new routes here.
 const router = createBrowserRouter([
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
   {
     path: "admin/",
     element: <Admin />,
+  },
+  {
+    path: "cart/",
+    element: <Cart />
   },
   LoginPageRoute,
   CreateAccountRoute,
